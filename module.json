@@ -1,0 +1,11 @@
+{
+    "authorEmail": "monoland.soft@gmail.com",
+    "authorName": "monoland",
+    "authorVendor": "monosoft",
+    "connection": "platform",
+    "name": "Procurement",
+    "namespace": "Module",
+    "priority": 2,
+    "disabled": false,
+    "providers": "Module\\Procurement\\Providers\\ProcurementServiceProvider"   
+}
