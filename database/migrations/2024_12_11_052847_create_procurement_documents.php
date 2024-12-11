@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('procurement_documents', function (Blueprint $table) {
             $table->id();
+            $table->string('name')->index();
+            $table->string('slug', 40)->unique();
+            $table->jsonb('meta')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }
