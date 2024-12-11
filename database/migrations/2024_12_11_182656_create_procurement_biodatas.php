@@ -11,12 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('procurement_documents', function (Blueprint $table) {
+        Schema::create('procurement_biodatas', function (Blueprint $table) {
             $table->id();
             $table->string('name')->index();
-            $table->string('slug', 40)->unique();
-            $table->string('mime')->default('application/pdf');
-            $table->mediumInteger('maxsize')->default(2000000);
+            $table->string('slug', 18)->unique();
+            $table->string('section')->nullable();
+            $table->string('position')->nullable();
+            $table->foreignId('workgroup_id')->nullable();
+            $table->enum('role', ['PPK', 'KASUBAG', 'KABAG', 'POKJA', 'ADMINISTRATOR', 'OPERATOR'])->index()->default('POKJA');
             $table->jsonb('meta')->nullable();
             $table->softDeletes();
             $table->timestamps();
@@ -28,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('procurement_documents');
+        Schema::dropIfExists('procurement_biodatas');
     }
 };
