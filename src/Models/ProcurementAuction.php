@@ -70,7 +70,16 @@ class ProcurementAuction extends Model
         DB::connection($model->connection)->beginTransaction();
 
         try {
-            // ...
+            $model->name = $request->name;
+            $model->slug = sha1(str($request->name)->slug());
+            $model->type = $request->type;
+            $model->method = $request->method;
+            $model->month = $request->month;
+            $model->year = $request->year;
+            $model->source = $request->source;
+            $model->ceiling = $request->ceiling;
+            $model->workunit_id = $request->workunit_id;
+            $model->status = 'DRAFTED';
             $model->save();
 
             DB::connection($model->connection)->commit();
@@ -98,7 +107,14 @@ class ProcurementAuction extends Model
         DB::connection($model->connection)->beginTransaction();
 
         try {
-            // ...
+            $model->name = $request->name;
+            $model->type = $request->type;
+            $model->method = $request->method;
+            $model->month = $request->month;
+            $model->year = $request->year;
+            $model->source = $request->source;
+            $model->ceiling = $request->ceiling;
+            $model->workunit_id = $request->workunit_id;
             $model->save();
 
             DB::connection($model->connection)->commit();

@@ -70,7 +70,11 @@ class ProcurementBiodata extends Model
         DB::connection($model->connection)->beginTransaction();
 
         try {
-            // ...
+            $model->name = $request->name;
+            $model->slug = $request->slug;
+            $model->section = $request->section;
+            $model->position = $request->position;
+            $model->role = $request->role;
             $model->save();
 
             DB::connection($model->connection)->commit();
@@ -98,7 +102,11 @@ class ProcurementBiodata extends Model
         DB::connection($model->connection)->beginTransaction();
 
         try {
-            // ...
+            $model->name = $request->name;
+            $model->slug = $request->slug;
+            $model->section = $request->section;
+            $model->position = $request->position;
+            $model->role = $request->role;
             $model->save();
 
             DB::connection($model->connection)->commit();
