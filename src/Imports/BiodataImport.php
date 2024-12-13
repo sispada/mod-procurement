@@ -29,11 +29,12 @@ class BiodataImport implements ToCollection, WithHeadingRow
             $this->command->getOutput()->progressAdvance();
 
             $record = (object) $row->toArray();
+            $slug   = trim(str_replace(' ', '', $record->slug));
 
             /** CREATE NEW RECORD */
             $model = new ProcurementBiodata();
             $model->name = $record->name;
-            $model->slug = $record->slug;
+            $model->slug = strlen($slug) < 18 ? null : $slug;
             $model->section = $record->section;
             $model->position = $record->position;
             $model->role = $record->role;
