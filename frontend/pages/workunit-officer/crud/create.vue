@@ -1,5 +1,5 @@
 <template>
-	<form-show with-helpdesk>
+	<form-create with-helpdesk>
 		<template v-slot:default="{ record }">
 			<v-card-text>
 				<v-row dense>
@@ -8,7 +8,6 @@
 							label="Name"
 							v-model="record.name"
 							hide-details
-							readonly
 						></v-text-field>
 					</v-col>
 
@@ -17,7 +16,6 @@
 							label="NIP"
 							v-model="record.slug"
 							hide-details
-							readonly
 						></v-text-field>
 					</v-col>
 
@@ -26,19 +24,16 @@
 							label="Pangkat / Golongan Ruang"
 							v-model="record.section"
 							hide-details
-							readonly
 						></v-text-field>
 					</v-col>
 				</v-row>
 			</v-card-text>
 		</template>
-
-		<template v-slot:helpdesk></template>
-	</form-show>
+	</form-create>
 </template>
 
 <script>
 export default {
-	name: "procurement-member-show",
+	name: "procurement-officer-create",
 };
 </script>

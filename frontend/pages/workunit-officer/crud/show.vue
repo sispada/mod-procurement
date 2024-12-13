@@ -8,44 +8,26 @@
 							label="Name"
 							v-model="record.name"
 							hide-details
+							readonly
 						></v-text-field>
 					</v-col>
 
-					<v-col cols="12">
+					<v-col cols="6">
+						<v-text-field
+							label="NIP"
+							v-model="record.slug"
+							hide-details
+							readonly
+						></v-text-field>
+					</v-col>
+
+					<v-col cols="6">
 						<v-text-field
 							label="Pangkat / Golongan Ruang"
 							v-model="record.section"
 							hide-details
 							readonly
 						></v-text-field>
-					</v-col>
-
-					<v-col cols="12">
-						<v-text-field
-							label="Jabatan"
-							v-model="record.position"
-							hide-details
-							readonly
-						></v-text-field>
-					</v-col>
-
-					<v-col cols="12">
-						<v-text-field
-							label="Unit Kerja"
-							v-model="record.workunit_id"
-							hide-details
-							readonly
-						></v-text-field>
-					</v-col>
-
-					<v-col cols="12">
-						<v-select
-							:items="['KABAG', 'KASUBAG', 'ADMINISTRATOR']"
-							label="Role"
-							v-model="record.role"
-							hide-details
-							readonly
-						></v-select>
 					</v-col>
 				</v-row>
 			</v-card-text>
@@ -57,6 +39,6 @@
 
 <script>
 export default {
-	name: "procurement-biodata-show",
+	name: "procurement-officer-show",
 };
 </script>

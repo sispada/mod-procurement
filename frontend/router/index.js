@@ -305,5 +305,51 @@ export default {
 				},
 			],
 		},
+
+		// workunit
+		{
+			path: "workunit/:workunit/officer",
+			component: () =>
+				import(
+					/* webpackChunkName: "procurement" */ "@modules/procurement/frontend/pages/workunit-officer/index.vue"
+				),
+			children: [
+				{
+					path: "",
+					name: "procurement-officer",
+					component: () =>
+						import(
+							/* webpackChunkName: "procurement" */ "@modules/procurement/frontend/pages/workunit-officer/crud/data.vue"
+						),
+				},
+
+				{
+					path: "create",
+					name: "procurement-officer-create",
+					component: () =>
+						import(
+							/* webpackChunkName: "procurement" */ "@modules/procurement/frontend/pages/workunit-officer/crud/create.vue"
+						),
+				},
+
+				{
+					path: ":officer/edit",
+					name: "procurement-officer-edit",
+					component: () =>
+						import(
+							/* webpackChunkName: "procurement" */ "@modules/procurement/frontend/pages/workunit-officer/crud/edit.vue"
+						),
+				},
+
+				{
+					path: ":officer/show",
+					name: "procurement-officer-show",
+					component: () =>
+						import(
+							/* webpackChunkName: "procurement" */ "@modules/procurement/frontend/pages/workunit-officer/crud/show.vue"
+						),
+				},
+			],
+		},
 	],
 };
