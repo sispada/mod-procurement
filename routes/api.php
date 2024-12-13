@@ -11,39 +11,39 @@ use Module\Procurement\Http\Controllers\ProcurementWorkgroupController;
 
 Route::get('dashboard', [DashboardController::class, 'index']);
 
-Route::post('auction/{procurementAuction}/restore', [ProcurementAuctionController::class, 'restore']);
-Route::delete('auction/{procurementAuction}/force-delete', [ProcurementAuctionController::class, 'forceDelete']);
+Route::put('auction/{procurementAuction}/restore', [ProcurementAuctionController::class, 'restore']);
+Route::delete('auction/{procurementAuction}/force', [ProcurementAuctionController::class, 'forceDelete']);
 Route::resource('auction', ProcurementAuctionController::class)->parameters([
     'auction' => 'procurementAuction'
 ]);
 
-Route::post('biodata/{procurementBiodata}/restore', [ProcurementBiodataController::class, 'restore']);
-Route::delete('biodata/{procurementBiodata}/force-delete', [ProcurementBiodataController::class, 'forceDelete']);
+Route::put('biodata/{procurementBiodata}/restore', [ProcurementBiodataController::class, 'restore']);
+Route::delete('biodata/{procurementBiodata}/force', [ProcurementBiodataController::class, 'forceDelete']);
 Route::resource('biodata', ProcurementBiodataController::class)->parameters([
     'biodata' => 'procurementBiodata'
 ]);
 
-Route::post('document/{procurementDocument}/restore', [ProcurementDocumentController::class, 'restore']);
-Route::delete('document/{procurementDocument}/force-delete', [ProcurementDocumentController::class, 'forceDelete']);
+Route::put('document/{procurementDocument}/restore', [ProcurementDocumentController::class, 'restore']);
+Route::delete('document/{procurementDocument}/force', [ProcurementDocumentController::class, 'forceDelete']);
 Route::resource('document', ProcurementDocumentController::class)->parameters([
     'document' => 'procurementDocument'
 ]);
 
-Route::post('workgroup/{procurementWorkgroup}/restore', [ProcurementWorkgroupController::class, 'restore']);
-Route::delete('workgroup/{procurementWorkgroup}/force-delete', [ProcurementWorkgroupController::class, 'forceDelete']);
+Route::put('workgroup/{procurementWorkgroup}/restore', [ProcurementWorkgroupController::class, 'restore']);
+Route::delete('workgroup/{procurementWorkgroup}/force', [ProcurementWorkgroupController::class, 'forceDelete']);
 Route::resource('workgroup', ProcurementWorkgroupController::class)->parameters([
     'workgroup' => 'procurementWorkgroup'
 ]);
 
-Route::post('workgroup/{procurementWorkgroup}/member/{procurementMember}/restore', [ProcurementMemberController::class, 'restore']);
-Route::delete('workgroup/{procurementWorkgroup}/member/{procurementMember}/force-delete', [ProcurementMemberController::class, 'forceDelete']);
+Route::put('workgroup/{procurementWorkgroup}/member/{procurementMember}/restore', [ProcurementMemberController::class, 'restore']);
+Route::delete('workgroup/{procurementWorkgroup}/member/{procurementMember}/force', [ProcurementMemberController::class, 'forceDelete']);
 Route::resource('workgroup.member', ProcurementMemberController::class)->parameters([
     'workgroup' => 'procurementWorkgroup',
     'member' => 'procurementMember'
 ]);
 
-Route::post('workunit/{procurementWorkunit}/restore', [ProcurementWorkunitController::class, 'restore']);
-Route::delete('workunit/{procurementWorkunit}/force-delete', [ProcurementWorkunitController::class, 'forceDelete']);
+Route::put('workunit/{procurementWorkunit}/restore', [ProcurementWorkunitController::class, 'restore']);
+Route::delete('workunit/{procurementWorkunit}/force', [ProcurementWorkunitController::class, 'forceDelete']);
 Route::resource('workunit', ProcurementWorkunitController::class)->parameters([
     'workunit' => 'procurementWorkunit'
 ]);

@@ -21,7 +21,7 @@ class ProcurementWorkunitController extends Controller
         Gate::authorize('view', ProcurementWorkunit::class);
 
         return new WorkunitCollection(
-            ProcurementWorkunit::applyMode($request->mode)
+            ProcurementWorkunit::applyMode($request->trashed)
                 ->filter($request->filters)
                 ->search($request->findBy)
                 ->sortBy($request->sortBy)

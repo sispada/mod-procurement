@@ -158,6 +158,52 @@ export default {
 			],
 		},
 
+		// history
+		{
+			path: "history",
+			component: () =>
+				import(
+					/* webpackChunkName: "procurement" */ "@modules/procurement/frontend/pages/history/index.vue"
+				),
+			children: [
+				{
+					path: "",
+					name: "procurement-history",
+					component: () =>
+						import(
+							/* webpackChunkName: "procurement" */ "@modules/procurement/frontend/pages/history/crud/data.vue"
+						),
+				},
+
+				{
+					path: "create",
+					name: "procurement-history-create",
+					component: () =>
+						import(
+							/* webpackChunkName: "procurement" */ "@modules/procurement/frontend/pages/history/crud/create.vue"
+						),
+				},
+
+				{
+					path: ":history/edit",
+					name: "procurement-history-edit",
+					component: () =>
+						import(
+							/* webpackChunkName: "procurement" */ "@modules/procurement/frontend/pages/history/crud/edit.vue"
+						),
+				},
+
+				{
+					path: ":history/show",
+					name: "procurement-history-show",
+					component: () =>
+						import(
+							/* webpackChunkName: "procurement" */ "@modules/procurement/frontend/pages/history/crud/show.vue"
+						),
+				},
+			],
+		},
+
 		// report
 		{
 			path: "report",

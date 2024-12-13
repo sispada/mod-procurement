@@ -25,7 +25,7 @@ class ProcurementMemberController extends Controller
         return new MemberCollection(
             $procurementWorkgroup
                 ->members()
-                ->applyMode($request->mode)
+                ->applyMode($request->trashed)
                 ->filter($request->filters)
                 ->search($request->findBy)
                 ->sortBy($request->sortBy, $request->sortDesc)

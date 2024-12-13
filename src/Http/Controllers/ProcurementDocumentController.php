@@ -21,7 +21,7 @@ class ProcurementDocumentController extends Controller
         Gate::authorize('view', ProcurementDocument::class);
 
         return new DocumentCollection(
-            ProcurementDocument::applyMode($request->mode)
+            ProcurementDocument::applyMode($request->trashed)
                 ->filter($request->filters)
                 ->search($request->findBy)
                 ->sortBy($request->sortBy)

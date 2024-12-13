@@ -21,7 +21,7 @@ class ProcurementWorkgroupController extends Controller
         Gate::authorize('view', ProcurementWorkgroup::class);
 
         return new WorkgroupCollection(
-            ProcurementWorkgroup::applyMode($request->mode)
+            ProcurementWorkgroup::applyMode($request->trashed)
                 ->filter($request->filters)
                 ->search($request->findBy)
                 ->sortBy($request->sortBy)

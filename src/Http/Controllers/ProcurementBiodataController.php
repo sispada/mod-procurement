@@ -21,7 +21,7 @@ class ProcurementBiodataController extends Controller
         Gate::authorize('view', ProcurementBiodata::class);
 
         return new BiodataCollection(
-            ProcurementBiodata::applyMode($request->mode)
+            ProcurementBiodata::applyMode($request->trashed)
                 ->filter($request->filters)
                 ->search($request->findBy)
                 ->sortBy($request->sortBy)

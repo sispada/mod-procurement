@@ -25,7 +25,7 @@ class ProcurementOfficerController extends Controller
         return new OfficerCollection(
             $procurementWorkunit
                 ->officers()
-                ->applyMode($request->mode)
+                ->applyMode($request->trashed)
                 ->filter($request->filters)
                 ->search($request->findBy)
                 ->sortBy($request->sortBy, $request->sortDesc)

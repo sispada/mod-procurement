@@ -21,7 +21,7 @@ class ProcurementAuctionController extends Controller
         Gate::authorize('view', ProcurementAuction::class);
 
         return new AuctionCollection(
-            ProcurementAuction::applyMode($request->mode)
+            ProcurementAuction::applyMode($request->trashed)
                 ->filter($request->filters)
                 ->search($request->findBy)
                 ->sortBy($request->sortBy)
