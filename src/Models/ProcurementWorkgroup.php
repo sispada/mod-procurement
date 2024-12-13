@@ -70,7 +70,8 @@ class ProcurementWorkgroup extends Model
         DB::connection($model->connection)->beginTransaction();
 
         try {
-            // ...
+            $model->name = $request->name;
+            $model->slug = sha1(str($request->name)->slug());
             $model->save();
 
             DB::connection($model->connection)->commit();
@@ -98,7 +99,8 @@ class ProcurementWorkgroup extends Model
         DB::connection($model->connection)->beginTransaction();
 
         try {
-            // ...
+            $model->name = $request->name;
+            $model->slug = sha1(str($request->name)->slug());
             $model->save();
 
             DB::connection($model->connection)->commit();
