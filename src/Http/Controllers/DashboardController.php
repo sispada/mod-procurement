@@ -17,4 +17,9 @@ class DashboardController extends Controller
     {
         //
     }
+
+    public function report(Request $request): void
+    {
+        // 
+    }
 }

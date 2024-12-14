@@ -5,17 +5,25 @@ use Module\Procurement\Http\Controllers\DashboardController;
 use Module\Procurement\Http\Controllers\ProcurementMemberController;
 use Module\Procurement\Http\Controllers\ProcurementAuctionController;
 use Module\Procurement\Http\Controllers\ProcurementBiodataController;
+use Module\Procurement\Http\Controllers\ProcurementHistoryController;
 use Module\Procurement\Http\Controllers\ProcurementOfficerController;
 use Module\Procurement\Http\Controllers\ProcurementDocumentController;
 use Module\Procurement\Http\Controllers\ProcurementWorkunitController;
 use Module\Procurement\Http\Controllers\ProcurementWorkgroupController;
 
 Route::get('dashboard', [DashboardController::class, 'index']);
+Route::get('report', [DashboardController::class, 'report']);
 
 Route::put('auction/{procurementAuction}/restore', [ProcurementAuctionController::class, 'restore']);
 Route::delete('auction/{procurementAuction}/force', [ProcurementAuctionController::class, 'forceDelete']);
 Route::resource('auction', ProcurementAuctionController::class)->parameters([
     'auction' => 'procurementAuction'
+]);
+
+Route::put('history/{procurementHistory}/restore', [ProcurementHistoryController::class, 'restore']);
+Route::delete('history/{procurementHistory}/force', [ProcurementHistoryController::class, 'forceDelete']);
+Route::resource('history', ProcurementHistoryController::class)->parameters([
+    'history' => 'procurementHistory'
 ]);
 
 Route::put('biodata/{procurementBiodata}/restore', [ProcurementBiodataController::class, 'restore']);
