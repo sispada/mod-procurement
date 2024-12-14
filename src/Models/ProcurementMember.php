@@ -59,6 +59,51 @@ class ProcurementMember extends Model
     protected $defaultOrder = 'name';
 
     /**
+     * mapHeaders function
+     *
+     * readonly value?: SelectItemKey<any>
+     * readonly title?: string | undefined
+     * readonly align?: 'start' | 'end' | 'center' | undefined
+     * readonly width?: string | number | undefined
+     * readonly minWidth?: string | undefined
+     * readonly maxWidth?: string | undefined
+     * readonly nowrap?: boolean | undefined
+     * readonly sortable?: boolean | undefined
+     *
+     * @param Request $request
+     * @return array
+     */
+    public static function mapHeaders(Request $request): array
+    {
+        return [
+            ['title' => 'N.I.P', 'value' => 'slug'],
+            ['title' => 'Nama', 'value' => 'name'],
+            ['title' => 'Pangkat', 'value' => 'section'],
+            ['title' => 'Updated', 'value' => 'updated_at', 'sortable' => false, 'width' => '170'],
+        ];
+    }
+
+    /**
+     * mapResource function
+     *
+     * @param Request $request
+     * @return array
+     */
+    public static function mapResource(Request $request, $model): array
+    {
+        return [
+            'id' => $model->id,
+            'name' => $model->name,
+            'slug' => $model->slug,
+            'section' => $model->section,
+            'position' => $model->position,
+
+            'subtitle' => (string) $model->updated_at,
+            'updated_at' => (string) $model->updated_at,
+        ];
+    }
+
+    /**
      * The model store method
      *
      * @param Request $request
@@ -71,7 +116,11 @@ class ProcurementMember extends Model
         DB::connection($model->connection)->beginTransaction();
 
         try {
-            // ...
+            $model->name = $request->name;
+            $model->slug = $request->slug;
+            $model->section = $request->section;
+            $model->position = $request->position;
+            $model->role = 'POKJA';
             $parent->members()->save($model);
 
             DB::connection($model->connection)->commit();
@@ -99,7 +148,10 @@ class ProcurementMember extends Model
         DB::connection($model->connection)->beginTransaction();
 
         try {
-            // ...
+            $model->name = $request->name;
+            $model->slug = $request->slug;
+            $model->section = $request->section;
+            $model->position = $request->position;
             $model->save();
 
             DB::connection($model->connection)->commit();

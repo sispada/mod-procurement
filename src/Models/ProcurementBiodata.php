@@ -2,6 +2,7 @@
 
 namespace Module\Procurement\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Module\System\Traits\HasMeta;
 use Illuminate\Support\Facades\DB;
@@ -56,6 +57,64 @@ class ProcurementBiodata extends Model
      * @var string
      */
     protected $defaultOrder = 'name';
+
+    /**
+     * mapHeaders function
+     *
+     * readonly value?: SelectItemKey<any>
+     * readonly title?: string | undefined
+     * readonly align?: 'start' | 'end' | 'center' | undefined
+     * readonly width?: string | number | undefined
+     * readonly minWidth?: string | undefined
+     * readonly maxWidth?: string | undefined
+     * readonly nowrap?: boolean | undefined
+     * readonly sortable?: boolean | undefined
+     *
+     * @param Request $request
+     * @return array
+     */
+    public static function mapHeaders(Request $request): array
+    {
+        return [
+            ['title' => 'N.I.P', 'value' => 'slug'],
+            ['title' => 'Nama', 'value' => 'name'],
+            ['title' => 'Pangkat', 'value' => 'section'],
+            ['title' => 'Updated', 'value' => 'updated_at', 'sortable' => false, 'width' => '170'],
+        ];
+    }
+
+    /**
+     * mapResource function
+     *
+     * @param Request $request
+     * @return array
+     */
+    public static function mapResource(Request $request, $model): array
+    {
+        return [
+            'id' => $model->id,
+            'name' => $model->name,
+            'slug' => $model->slug,
+            'section' => $model->section,
+            'position' => $model->position,
+            'role' => $model->role,
+
+            'subtitle' => (string) $model->updated_at,
+            'updated_at' => (string) $model->updated_at,
+        ];
+    }
+
+    /**
+     * scopeOnlyEmployee function
+     *
+     * @param Builder $query
+     * @return void
+     */
+    public function scopeOnlyEmployee(Builder $query)
+    {
+        return $query
+            ->whereNotIn('role', ['PPK', 'POKJA']);
+    }
 
     /**
      * The model store method

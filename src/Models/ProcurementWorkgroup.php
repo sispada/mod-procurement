@@ -9,6 +9,7 @@ use Module\System\Traits\Filterable;
 use Module\System\Traits\Searchable;
 use Module\System\Traits\HasPageSetup;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Module\Procurement\Http\Resources\WorkgroupResource;
 
@@ -56,6 +57,16 @@ class ProcurementWorkgroup extends Model
      * @var string
      */
     protected $defaultOrder = 'name';
+
+    /**
+     * members function
+     *
+     * @return HasMany
+     */
+    public function members(): HasMany
+    {
+        return $this->hasMany(ProcurementMember::class, 'workgroup_id');
+    }
 
     /**
      * The model store method

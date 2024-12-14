@@ -39,6 +39,7 @@ class BiodataImport implements ToCollection, WithHeadingRow
             $model->position = $record->position;
             $model->role = $record->role;
             $model->workgroup_id = $record->workgroup_id;
+            $model->workunit_id = 39;
             $model->save();
         }
 

@@ -5,6 +5,7 @@ use Module\Procurement\Http\Controllers\DashboardController;
 use Module\Procurement\Http\Controllers\ProcurementMemberController;
 use Module\Procurement\Http\Controllers\ProcurementAuctionController;
 use Module\Procurement\Http\Controllers\ProcurementBiodataController;
+use Module\Procurement\Http\Controllers\ProcurementOfficerController;
 use Module\Procurement\Http\Controllers\ProcurementDocumentController;
 use Module\Procurement\Http\Controllers\ProcurementWorkunitController;
 use Module\Procurement\Http\Controllers\ProcurementWorkgroupController;
@@ -46,4 +47,11 @@ Route::put('workunit/{procurementWorkunit}/restore', [ProcurementWorkunitControl
 Route::delete('workunit/{procurementWorkunit}/force', [ProcurementWorkunitController::class, 'forceDelete']);
 Route::resource('workunit', ProcurementWorkunitController::class)->parameters([
     'workunit' => 'procurementWorkunit'
+]);
+
+Route::put('workunit/{procurementWorkunit}/restore', [ProcurementOfficerController::class, 'restore']);
+Route::delete('workunit/{procurementWorkunit}/force', [ProcurementOfficerController::class, 'forceDelete']);
+Route::resource('workunit.officer', ProcurementOfficerController::class)->parameters([
+    'workunit' => 'procurementWorkunit',
+    'officer' => 'procurementOfficer'
 ]);

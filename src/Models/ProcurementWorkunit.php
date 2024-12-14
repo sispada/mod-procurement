@@ -9,6 +9,7 @@ use Module\System\Traits\Filterable;
 use Module\System\Traits\Searchable;
 use Module\System\Traits\HasPageSetup;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Module\Procurement\Http\Resources\WorkunitResource;
 
@@ -56,6 +57,16 @@ class ProcurementWorkunit extends Model
      * @var string
      */
     protected $defaultOrder = 'name';
+
+    /**
+     * officers function
+     *
+     * @return HasMany
+     */
+    public function officers(): HasMany
+    {
+        return $this->hasMany(ProcurementOfficer::class, 'workunit_id')->where('role', 'PPK');
+    }
 
     /**
      * The model store method

@@ -22,6 +22,7 @@ class ProcurementBiodataController extends Controller
 
         return new BiodataCollection(
             ProcurementBiodata::applyMode($request->trashed)
+                ->onlyEmployee()
                 ->filter($request->filters)
                 ->search($request->findBy)
                 ->sortBy($request->sortBy)
