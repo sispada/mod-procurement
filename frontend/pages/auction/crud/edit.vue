@@ -96,7 +96,7 @@
 						<v-combobox
 							:items="workunits"
 							label="Unit Kerja"
-							v-model="record.workunit_id"
+							v-model="record.workunit"
 							hide-details
 						></v-combobox>
 					</v-col>

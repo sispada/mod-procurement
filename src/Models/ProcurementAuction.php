@@ -47,7 +47,9 @@ class ProcurementAuction extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'meta' => 'array'
+        'documents' => 'array',
+        'meta' => 'array',
+        'reports' => 'array',
     ];
 
     /**
@@ -56,6 +58,70 @@ class ProcurementAuction extends Model
      * @var string
      */
     protected $defaultOrder = 'name';
+
+    /**
+     * mapCombos function
+     *
+     * @param Request $request
+     * @return array
+     */
+    public static function mapCombos(Request $request): array
+    {
+        return [
+            'workunits' => ProcurementWorkunit::forCombo()
+        ];
+    }
+
+    /**
+     * mapHeaders function
+     *
+     * readonly value?: SelectItemKey<any>
+     * readonly title?: string | undefined
+     * readonly align?: 'start' | 'end' | 'center' | undefined
+     * readonly width?: string | number | undefined
+     * readonly minWidth?: string | undefined
+     * readonly maxWidth?: string | undefined
+     * readonly nowrap?: boolean | undefined
+     * readonly sortable?: boolean | undefined
+     *
+     * @param Request $request
+     * @return array
+     */
+    public static function mapHeaders(Request $request): array
+    {
+        return [
+            ['title' => 'Name', 'value' => 'name'],
+            ['title' => 'Updated', 'value' => 'updated_at', 'sortable' => false, 'width' => '170'],
+        ];
+    }
+
+    /**
+     * mapResource function
+     *
+     * @param Request $request
+     * @return array
+     */
+    public static function mapResource(Request $request, $model): array
+    {
+        return [
+            'id' => $model->id,
+            'name' => $model->name,
+            'type' => $model->type,
+            'method' => $model->method,
+            'month' => $model->month,
+            'year' => $model->year,
+            'source' => $model->source,
+            'ceiling' => $model->ceiling,
+            'workunit' => [
+                'title' => $model->workunit_name,
+                'value' => $model->workunit_id
+            ],
+            'status' => $model->status,
+
+            'subtitle' => (string) $model->updated_at,
+            'updated_at' => (string) $model->updated_at,
+        ];
+    }
 
     /**
      * The model store method
@@ -78,7 +144,8 @@ class ProcurementAuction extends Model
             $model->year = $request->year;
             $model->source = $request->source;
             $model->ceiling = $request->ceiling;
-            $model->workunit_id = $request->workunit_id;
+            $model->workunit_id = $request->workunit['value'];
+            $model->workunit_name = $request->workunit['title'];
             $model->status = 'DRAFTED';
             $model->save();
 
@@ -114,7 +181,8 @@ class ProcurementAuction extends Model
             $model->year = $request->year;
             $model->source = $request->source;
             $model->ceiling = $request->ceiling;
-            $model->workunit_id = $request->workunit_id;
+            $model->workunit_id = $request->workunit['value'];
+            $model->workunit_name = $request->workunit['title'];
             $model->save();
 
             DB::connection($model->connection)->commit();

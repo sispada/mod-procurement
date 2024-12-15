@@ -64,10 +64,10 @@ return new class extends Migration
                 'COMPLETED'
             ])->index()->default('DRAFTED');
 
-            $table->jsonb('file_documents')->nullable();
-            $table->jsonb('file_reports')->nullable();
-            $table->string('file_assignment')->nullable();
-            $table->string('file_review')->nullable();
+            $table->string('assignments')->nullable();
+            $table->string('reviews')->nullable();
+            $table->jsonb('documents')->nullable();
+            $table->jsonb('reports')->nullable();
             $table->jsonb('meta')->nullable();
             $table->softDeletes();
             $table->timestamps();

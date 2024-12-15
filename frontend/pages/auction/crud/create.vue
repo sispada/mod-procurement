@@ -39,7 +39,7 @@
 					<v-col cols="6">
 						<v-select
 							:items="[
-								{ title: 'JANUARY', value: 1 },
+								{ title: 'JANUARI', value: 1 },
 								{ title: 'FEBRUARI', value: 2 },
 								{ title: 'MARET', value: 3 },
 								{ title: 'APRIL', value: 4 },
@@ -52,7 +52,7 @@
 								{ title: 'NOVEMBER', value: 11 },
 								{ title: 'DESEMBER', value: 12 },
 							]"
-							label="Metode"
+							label="Bulan"
 							v-model="record.month"
 							hide-details
 						></v-select>
@@ -96,7 +96,7 @@
 						<v-combobox
 							:items="workunits"
 							label="Unit Kerja"
-							v-model="record.workunit_id"
+							v-model="record.workunit"
 							hide-details
 						></v-combobox>
 					</v-col>
