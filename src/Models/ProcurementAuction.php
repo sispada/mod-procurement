@@ -9,6 +9,7 @@ use Module\System\Traits\Filterable;
 use Module\System\Traits\Searchable;
 use Module\System\Traits\HasPageSetup;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Module\Procurement\Http\Resources\AuctionResource;
 
@@ -91,7 +92,9 @@ class ProcurementAuction extends Model
     {
         return [
             ['title' => 'Name', 'value' => 'name'],
-            ['title' => 'Updated', 'value' => 'updated_at', 'sortable' => false, 'width' => '170'],
+            ['title' => 'Page', 'value' => 'ceiling'],
+            ['title' => 'Unit Kerja', 'value' => 'workunit_name'],
+            ['title' => 'Status', 'value' => 'status', 'sortable' => false, 'width' => '170'],
         ];
     }
 
@@ -116,11 +119,24 @@ class ProcurementAuction extends Model
                 'title' => $model->workunit_name,
                 'value' => $model->workunit_id
             ],
+            'workunit_name' => $model->workunit_name,
             'status' => $model->status,
 
             'subtitle' => (string) $model->updated_at,
             'updated_at' => (string) $model->updated_at,
         ];
+    }
+
+    /**
+     * booted function
+     *
+     * @return void
+     */
+    protected static function booted(): void
+    {
+        static::addGlobalScope('onlyProcessed', function (Builder $query) {
+            $query->whereNotIn('status', ['COMPLETED', 'ABORTED']);
+        });
     }
 
     /**

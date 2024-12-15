@@ -9,6 +9,7 @@ use Module\System\Traits\Filterable;
 use Module\System\Traits\Searchable;
 use Module\System\Traits\HasPageSetup;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Module\Procurement\Http\Resources\HistoryResource;
 
@@ -56,6 +57,18 @@ class ProcurementHistory extends Model
      * @var string
      */
     protected $defaultOrder = 'name';
+
+    /**
+     * booted function
+     *
+     * @return void
+     */
+    protected static function booted(): void
+    {
+        static::addGlobalScope('onlyFinished', function (Builder $query) {
+            $query->whereIn('status', ['COMPLETED', 'ABORTED']);
+        });
+    }
 
     /**
      * The model store method
