@@ -52,6 +52,10 @@ class DataImport implements WithMultipleSheets, WithChunkReading
             return $this->sheets;
         }
 
-        return [];
+        return [
+            'workunits' => new WorkunitImport($this->command),
+            'workgroups' => new WorkgroupImport($this->command),
+            'biodatas' => new BiodataImport($this->command),
+        ];
     }
 }
