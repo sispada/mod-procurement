@@ -90,7 +90,7 @@ class RouteServiceProvider extends ServiceProvider
             }
         });
 
-        Route::domain($domain . '.' . env('APP_URL'))
+        Route::domain($domain ? $domain . '.' . env('APP_URL') : env('APP_URL'))
             ->prefix($prefix . '/api')
             ->middleware(['api', 'auth:sanctum'])
             ->namespace('Module\Procurement\Http\Controllers')
