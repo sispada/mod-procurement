@@ -91,12 +91,12 @@
 					</v-col>
 
 					<v-col cols="6">
-						<v-text-field
+						<v-currency-field
 							label="Pagu"
 							v-model="record.ceiling"
 							hide-details
 							readonly
-						></v-text-field>
+						></v-currency-field>
 					</v-col>
 
 					<v-col cols="12">

@@ -64,6 +64,11 @@ return new class extends Migration
                 'COMPLETED'
             ])->index()->default('DRAFTED');
 
+            $table->foreignId('submitted_by');
+            $table->foreignId('qualified_by');
+            $table->foreignId('verified_by');
+            $table->foreignId('evaluated_by');
+
             $table->string('assignments')->nullable();
             $table->string('reviews')->nullable();
             $table->jsonb('documents')->nullable();
