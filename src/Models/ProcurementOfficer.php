@@ -132,6 +132,7 @@ class ProcurementOfficer extends Model
             $model->section = $request->section;
             $model->position = $request->position;
             $model->role = 'PPK';
+            
             $parent->officers()->save($model);
 
             DB::connection($model->connection)->commit();
