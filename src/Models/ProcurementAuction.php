@@ -92,7 +92,7 @@ class ProcurementAuction extends Model
     {
         return [
             ['title' => 'Name', 'value' => 'name'],
-            ['title' => 'Page', 'value' => 'ceiling'],
+            ['title' => 'Pagu', 'value' => 'ceiling'],
             ['title' => 'Unit Kerja', 'value' => 'workunit_name'],
             ['title' => 'Status', 'value' => 'status', 'sortable' => false, 'width' => '170'],
         ];
@@ -114,7 +114,7 @@ class ProcurementAuction extends Model
             'month' => $model->month,
             'year' => $model->year,
             'source' => $model->source,
-            'ceiling' => $model->ceiling,
+            'ceiling' => 'Rp. ' . number_format($model->ceiling, 0, ',', '.'),
             'workunit' => [
                 'title' => $model->workunit_name,
                 'value' => $model->workunit_id
@@ -124,6 +124,32 @@ class ProcurementAuction extends Model
 
             'subtitle' => (string) $model->updated_at,
             'updated_at' => (string) $model->updated_at,
+        ];
+    }
+
+    /**
+     * mapResource function
+     *
+     * @param Request $request
+     * @return array
+     */
+    public static function mapResourceShow(Request $request, $model): array
+    {
+        return [
+            'id' => $model->id,
+            'name' => $model->name,
+            'type' => $model->type,
+            'method' => $model->method,
+            'month' => $model->month,
+            'year' => $model->year,
+            'source' => $model->source,
+            'ceiling' => $model->ceiling,
+            'workunit' => [
+                'title' => $model->workunit_name,
+                'value' => $model->workunit_id
+            ],
+            'workunit_name' => $model->workunit_name,
+            'status' => $model->status,
         ];
     }
 
