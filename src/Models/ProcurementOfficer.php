@@ -10,6 +10,7 @@ use Module\System\Traits\Searchable;
 use Module\System\Traits\HasPageSetup;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Module\Procurement\Events\ProcurementBiodataCreated;
 use Module\Procurement\Models\ProcurementWorkunit;
 use Module\Procurement\Http\Resources\OfficerResource;
 
@@ -137,6 +138,8 @@ class ProcurementOfficer extends Model
 
             DB::connection($model->connection)->commit();
 
+            ProcurementBiodataCreated::dispatch($model);
+
             return new OfficerResource($model);
         } catch (\Exception $e) {
             DB::connection($model->connection)->rollBack();
@@ -167,6 +170,8 @@ class ProcurementOfficer extends Model
             $model->save();
 
             DB::connection($model->connection)->commit();
+
+            ProcurementBiodataCreated::dispatch($model);
 
             return new OfficerResource($model);
         } catch (\Exception $e) {

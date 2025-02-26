@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Module\Procurement\Models\ProcurementWorkgroup;
 use Module\Procurement\Http\Resources\MemberResource;
+use Module\Procurement\Events\ProcurementBiodataCreated;
 
 class ProcurementMember extends Model
 {
@@ -125,6 +126,8 @@ class ProcurementMember extends Model
 
             DB::connection($model->connection)->commit();
 
+            ProcurementBiodataCreated::dispatch($model);
+
             return new MemberResource($model);
         } catch (\Exception $e) {
             DB::connection($model->connection)->rollBack();
@@ -155,6 +158,8 @@ class ProcurementMember extends Model
             $model->save();
 
             DB::connection($model->connection)->commit();
+
+            ProcurementBiodataCreated::dispatch($model);
 
             return new MemberResource($model);
         } catch (\Exception $e) {
