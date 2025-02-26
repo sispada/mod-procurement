@@ -5,12 +5,14 @@ namespace Module\Procurement\Models;
 use Illuminate\Http\Request;
 use Module\System\Traits\HasMeta;
 use Illuminate\Support\Facades\DB;
+use Module\System\Models\SystemUser;
 use Module\System\Traits\Filterable;
 use Module\System\Traits\Searchable;
 use Module\System\Traits\HasPageSetup;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Module\Procurement\Models\ProcurementWorkgroup;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Module\Procurement\Http\Resources\MemberResource;
 use Module\Procurement\Events\ProcurementBiodataCreated;
 
@@ -102,6 +104,16 @@ class ProcurementMember extends Model
             'subtitle' => (string) $model->updated_at,
             'updated_at' => (string) $model->updated_at,
         ];
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return MorphOne
+     */
+    public function user(): MorphOne
+    {
+        return $this->morphOne(SystemUser::class, 'userable');
     }
 
     /**

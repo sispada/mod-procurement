@@ -5,14 +5,16 @@ namespace Module\Procurement\Models;
 use Illuminate\Http\Request;
 use Module\System\Traits\HasMeta;
 use Illuminate\Support\Facades\DB;
+use Module\System\Models\SystemUser;
 use Module\System\Traits\Filterable;
 use Module\System\Traits\Searchable;
 use Module\System\Traits\HasPageSetup;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Module\Procurement\Events\ProcurementBiodataCreated;
 use Module\Procurement\Models\ProcurementWorkunit;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Module\Procurement\Http\Resources\OfficerResource;
+use Module\Procurement\Events\ProcurementBiodataCreated;
 
 class ProcurementOfficer extends Model
 {
@@ -113,6 +115,16 @@ class ProcurementOfficer extends Model
     public static function mapResourceShow(Request $request, $model): array
     {
         return static::mapResource($request, $model);
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return MorphOne
+     */
+    public function user(): MorphOne
+    {
+        return $this->morphOne(SystemUser::class, 'userable');
     }
 
     /**

@@ -71,6 +71,26 @@ class ProcurementHistory extends Model
     }
 
     /**
+     * scopeForCurrentUser function
+     *
+     * @param Builder $query
+     * @param [type] $user
+     * @return void
+     */
+    public function scopeForCurrentUser(Builder $query, $user)
+    {
+        if ($user->hasLicenseAs('procurement-ppk')) {
+            return $query->where('workunit_id', $user->userable->workunit_id);
+        }
+
+        if ($user->hasLicenseAs('procurement-pokja')) {
+            return $query->whereIn('status', ['SIGNED', 'SHIFTED', 'EVALUATED', 'CONFIRMED', 'REPORTED']);
+        }
+
+        return $query;
+    }
+
+    /**
      * The model store method
      *
      * @param Request $request

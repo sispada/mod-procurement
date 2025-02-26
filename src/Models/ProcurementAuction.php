@@ -140,6 +140,26 @@ class ProcurementAuction extends Model
     }
 
     /**
+     * scopeForCurrentUser function
+     *
+     * @param Builder $query
+     * @param [type] $user
+     * @return void
+     */
+    public function scopeForCurrentUser(Builder $query, $user)
+    {
+        if ($user->hasLicenseAs('procurement-ppk')) {
+            return $query->where('workunit_id', $user->userable->workunit_id);
+        }
+
+        if ($user->hasLicenseAs('procurement-pokja')) {
+            return $query->whereIn('status', ['SIGNED', 'SHIFTED', 'EVALUATED', 'CONFIRMED', 'REPORTED']);
+        }
+
+        return $query;
+    }
+
+    /**
      * The model store method
      *
      * @param Request $request
@@ -163,6 +183,7 @@ class ProcurementAuction extends Model
             $model->workunit_id = $request->workunit['value'];
             $model->workunit_name = $request->workunit['title'];
             $model->status = 'DRAFTED';
+            $model->submitted_by = $request->user()->userable_id;
             $model->save();
 
             DB::connection($model->connection)->commit();

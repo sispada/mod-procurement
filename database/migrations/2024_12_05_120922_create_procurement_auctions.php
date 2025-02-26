@@ -46,6 +46,7 @@ return new class extends Migration
 
             $table->double('ceiling')->default(0);
             $table->double('realization')->default(0);
+            $table->foreignId('workgroup_id')->nullable();
             $table->foreignId('workunit_id');
             $table->string('workunit_name');
 
