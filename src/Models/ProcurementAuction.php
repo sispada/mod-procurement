@@ -154,6 +154,24 @@ class ProcurementAuction extends Model
     }
 
     /**
+     * mapStatuses function
+     *
+     * @param Request $request
+     * @return array
+     */
+    public static function mapStatuses(Request $request, $model = null): array
+    {
+        return [
+            'canCreate' => $request->user()->hasLicenseAs('procurement-ppk'),
+            'canEdit' => $request->user()->hasLicenseAs('procurement-ppk'),
+            'canUpdate' => $request->user()->hasLicenseAs('procurement-ppk'),
+            'canDelete' => $request->user()->hasLicenseAs('procurement-ppk'),
+            'canRestore' => $request->user()->hasLicenseAs('procurement-ppk'),
+            'canDestroy' => $request->user()->hasLicenseAs('procurement-ppk'),
+        ];
+    }
+
+    /**
      * booted function
      *
      * @return void
