@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('procurement_biodatas', function (Blueprint $table) {
             $table->id();
             $table->string('name')->index();
-            $table->string('slug', 18)->unique()->nullable();
+            $table->string('slug', 18)->index()->nullable();
             $table->string('section')->nullable();
             $table->string('position')->nullable();
             $table->foreignId('workgroup_id')->nullable();
@@ -23,6 +23,8 @@ return new class extends Migration
             $table->jsonb('meta')->nullable();
             $table->softDeletes();
             $table->timestamps();
+
+            $table->unique(['slug', 'role']);
         });
     }
 

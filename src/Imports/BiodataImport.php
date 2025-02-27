@@ -6,6 +6,7 @@ use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Module\Procurement\Models\ProcurementBiodata;
+use Module\Procurement\Events\ProcurementBiodataCreated;
 
 class BiodataImport implements ToCollection, WithHeadingRow
 {
@@ -41,6 +42,8 @@ class BiodataImport implements ToCollection, WithHeadingRow
             $model->workgroup_id = $record->workgroup_id;
             $model->workunit_id = 39;
             $model->save();
+
+            ProcurementBiodataCreated::dispatch($model);
         }
 
         $this->command->getOutput()->progressFinish();

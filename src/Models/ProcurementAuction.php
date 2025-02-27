@@ -69,7 +69,7 @@ class ProcurementAuction extends Model
     public static function mapCombos(Request $request): array
     {
         return [
-            'workunits' => ProcurementWorkunit::forCombo()
+            'workunits' => ProcurementWorkunit::where('id', $request->user()->userable->workunit_id)->forCombo()
         ];
     }
 
