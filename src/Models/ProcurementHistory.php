@@ -71,6 +71,60 @@ class ProcurementHistory extends Model
     }
 
     /**
+     * mapHeaders function
+     *
+     * readonly value?: SelectItemKey<any>
+     * readonly title?: string | undefined
+     * readonly align?: 'start' | 'end' | 'center' | undefined
+     * readonly width?: string | number | undefined
+     * readonly minWidth?: string | undefined
+     * readonly maxWidth?: string | undefined
+     * readonly nowrap?: boolean | undefined
+     * readonly sortable?: boolean | undefined
+     *
+     * @param Request $request
+     * @return array
+     */
+    public static function mapHeaders(Request $request): array
+    {
+        return [
+            ['title' => 'Name', 'value' => 'name'],
+            ['title' => 'Pagu', 'value' => 'ceiling'],
+            ['title' => 'Unit Kerja', 'value' => 'workunit_name'],
+            ['title' => 'Status', 'value' => 'status', 'sortable' => false, 'width' => '170'],
+        ];
+    }
+
+    /**
+     * mapResource function
+     *
+     * @param Request $request
+     * @return array
+     */
+    public static function mapResource(Request $request, $model): array
+    {
+        return [
+            'id' => $model->id,
+            'name' => $model->name,
+            'type' => $model->type,
+            'method' => $model->method,
+            'month' => $model->month,
+            'year' => $model->year,
+            'source' => $model->source,
+            'ceiling' => 'Rp. ' . number_format($model->ceiling, 0, ',', '.'),
+            'workunit' => [
+                'title' => $model->workunit_name,
+                'value' => $model->workunit_id
+            ],
+            'workunit_name' => $model->workunit_name,
+            'status' => $model->status,
+
+            'subtitle' => (string) $model->updated_at,
+            'updated_at' => (string) $model->updated_at,
+        ];
+    }
+
+    /**
      * scopeForCurrentUser function
      *
      * @param Builder $query
@@ -81,10 +135,6 @@ class ProcurementHistory extends Model
     {
         if ($user->hasLicenseAs('procurement-ppk')) {
             return $query->where('workunit_id', $user->userable->workunit_id);
-        }
-
-        if ($user->hasLicenseAs('procurement-pokja')) {
-            return $query->whereIn('status', ['SIGNED', 'SHIFTED', 'EVALUATED', 'CONFIRMED', 'REPORTED']);
         }
 
         return $query;

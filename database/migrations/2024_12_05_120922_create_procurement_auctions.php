@@ -65,9 +65,12 @@ return new class extends Migration
                 'COMPLETED'
             ])->index()->default('DRAFTED');
 
-            $table->foreignId('submitted_by');
+            $table->foreignId('drafted_by');
+            $table->foreignId('submitted_by')->nullable();
             $table->foreignId('qualified_by')->nullable();
+            $table->foreignId('rejected_by')->nullable();
             $table->foreignId('verified_by')->nullable();
+            $table->foreignId('aborted_by')->nullable();
             $table->foreignId('evaluated_by')->nullable();
 
             $table->string('assignments')->nullable();

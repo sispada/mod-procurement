@@ -14,6 +14,13 @@ use Module\Procurement\Http\Controllers\ProcurementWorkgroupController;
 Route::get('dashboard', [DashboardController::class, 'index']);
 Route::get('report', [DashboardController::class, 'report']);
 
+Route::put('auction/{procurementAuction}/submitted', [ProcurementAuctionController::class, 'submitted']);
+Route::put('auction/{procurementAuction}/qualified', [ProcurementAuctionController::class, 'qualified']);
+Route::put('auction/{procurementAuction}/rejected', [ProcurementAuctionController::class, 'rejected']);
+Route::put('auction/{procurementAuction}/verified', [ProcurementAuctionController::class, 'verified']);
+Route::put('auction/{procurementAuction}/aborted', [ProcurementAuctionController::class, 'aborted']);
+Route::put('auction/{procurementAuction}/avaluated', [ProcurementAuctionController::class, 'avaluated']);
+
 Route::put('auction/{procurementAuction}/restore', [ProcurementAuctionController::class, 'restore']);
 Route::delete('auction/{procurementAuction}/force', [ProcurementAuctionController::class, 'forceDelete']);
 Route::resource('auction', ProcurementAuctionController::class)->parameters([

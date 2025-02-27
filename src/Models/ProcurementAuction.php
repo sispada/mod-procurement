@@ -69,6 +69,7 @@ class ProcurementAuction extends Model
     public static function mapCombos(Request $request): array
     {
         return [
+            'workgroups' => ProcurementWorkgroup::forCombo(),
             'workunits' => optional($request->user()->userable)->workunit_id ? ProcurementWorkunit::where('id', $request->user()->userable->workunit_id)->forCombo() : []
         ];
     }
@@ -143,11 +144,12 @@ class ProcurementAuction extends Model
             'month' => $model->month,
             'year' => $model->year,
             'source' => $model->source,
-            'ceiling' => $model->ceiling,
+            'ceiling' => floatval($model->ceiling),
             'workunit' => [
                 'title' => $model->workunit_name,
                 'value' => $model->workunit_id
             ],
+            'workgroup_id' => $model->workgroup_id,
             'workunit_name' => $model->workunit_name,
             'status' => $model->status,
         ];
@@ -163,11 +165,16 @@ class ProcurementAuction extends Model
     {
         return [
             'canCreate' => $request->user()->hasLicenseAs('procurement-ppk'),
-            'canEdit' => $request->user()->hasLicenseAs('procurement-ppk'),
-            'canUpdate' => $request->user()->hasLicenseAs('procurement-ppk'),
-            'canDelete' => $request->user()->hasLicenseAs('procurement-ppk'),
-            'canRestore' => $request->user()->hasLicenseAs('procurement-ppk'),
-            'canDestroy' => $request->user()->hasLicenseAs('procurement-ppk'),
+            'canEdit' => $request->user()->hasLicenseAs('procurement-ppk') && optional($model)->status === 'DRAFTED',
+            'canUpdate' => $request->user()->hasLicenseAs('procurement-ppk') && optional($model)->status === 'DRAFTED',
+            'canDelete' => $request->user()->hasLicenseAs('procurement-ppk') && optional($model)->status === 'DRAFTED',
+            'canRestore' => $request->user()->hasLicenseAs('procurement-ppk') && optional($model)->status === 'DRAFTED',
+            'canDestroy' => $request->user()->hasLicenseAs('procurement-ppk') && optional($model)->status === 'DRAFTED',
+
+            'isKABAG' => $request->user()->hasLicenseAs('procurement-kabag'),
+            'isKASUBAG' => $request->user()->hasLicenseAs('procurement-kasubag'),
+            'isPOKJA' => $request->user()->hasLicenseAs('procurement-pokja'),
+            'isPPK' => $request->user()->hasLicenseAs('procurement-ppk'),
         ];
     }
 
@@ -196,8 +203,16 @@ class ProcurementAuction extends Model
             return $query->where('workunit_id', $user->userable->workunit_id);
         }
 
+        if ($user->hasLicenseAs('procurement-kasubag')) {
+            return $query->where('status', 'SUBMITTED');
+        }
+
+        if ($user->hasLicenseAs('procurement-kabag')) {
+            return $query->where('status', 'QUALIFIED');
+        }
+
         if ($user->hasLicenseAs('procurement-pokja')) {
-            return $query->whereIn('status', ['SIGNED', 'SHIFTED', 'EVALUATED', 'CONFIRMED', 'REPORTED']);
+            return $query->where('status', 'VERIFIED');
         }
 
         return $query;
@@ -227,7 +242,7 @@ class ProcurementAuction extends Model
             $model->workunit_id = $request->workunit['value'];
             $model->workunit_name = $request->workunit['title'];
             $model->status = 'DRAFTED';
-            $model->submitted_by = $request->user()->userable_id;
+            $model->drafted_by = $request->user()->userable_id;
             $model->save();
 
             DB::connection($model->connection)->commit();
@@ -269,6 +284,199 @@ class ProcurementAuction extends Model
             DB::connection($model->connection)->commit();
 
             return new AuctionResource($model);
+        } catch (\Exception $e) {
+            DB::connection($model->connection)->rollBack();
+
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * submittedRecord function
+     *
+     * @param Request $request
+     * @param [type] $model
+     * @return void
+     */
+    public static function submittedRecord(Request $request, $model)
+    {
+        DB::connection($model->connection)->beginTransaction();
+
+        try {
+            $model->status = 'SUBMITTED';
+            $model->submitted_by = $request->user()->userable_id;
+            $model->save();
+
+            DB::connection($model->connection)->commit();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'kirim pengajuan berhasil.'
+            ], 200);
+        } catch (\Exception $e) {
+            DB::connection($model->connection)->rollBack();
+
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * qualifiedRecord function
+     *
+     * @param Request $request
+     * @param [type] $model
+     * @return void
+     */
+    public static function qualifiedRecord(Request $request, $model)
+    {
+        DB::connection($model->connection)->beginTransaction();
+
+        try {
+            $model->status = 'QUALIFIED';
+            $model->qualified_by = $request->user()->userable_id;
+            $model->save();
+
+            DB::connection($model->connection)->commit();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'pemeriksaan qualifikasi berhasil.'
+            ], 200);
+        } catch (\Exception $e) {
+            DB::connection($model->connection)->rollBack();
+
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * rejectedRecord function
+     *
+     * @param Request $request
+     * @param [type] $model
+     * @return void
+     */
+    public static function rejectedRecord(Request $request, $model)
+    {
+        DB::connection($model->connection)->beginTransaction();
+
+        try {
+            $model->status = 'REJECTED';
+            $model->rejected_by = $request->user()->userable_id;
+            $model->save();
+
+            DB::connection($model->connection)->commit();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'penolakan qualifikasi berhasil.'
+            ], 200);
+        } catch (\Exception $e) {
+            DB::connection($model->connection)->rollBack();
+
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * verifiedRecord function
+     *
+     * @param Request $request
+     * @param [type] $model
+     * @return void
+     */
+    public static function verifiedRecord(Request $request, $model)
+    {
+        DB::connection($model->connection)->beginTransaction();
+
+        try {
+            $model->workgroup_id = $request->workgroup_id;
+            $model->status = 'VERIFIED';
+            $model->verified_by = $request->user()->userable_id;
+            $model->save();
+
+            DB::connection($model->connection)->commit();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'verifikasi pengajuan berhasil.'
+            ], 200);
+        } catch (\Exception $e) {
+            DB::connection($model->connection)->rollBack();
+
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * abortedRecord function
+     *
+     * @param Request $request
+     * @param [type] $model
+     * @return void
+     */
+    public static function abortedRecord(Request $request, $model)
+    {
+        DB::connection($model->connection)->beginTransaction();
+
+        try {
+            $model->status = 'ABORTED';
+            $model->aborted_by = $request->user()->userable_id;
+            $model->save();
+
+            DB::connection($model->connection)->commit();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'pembatalan pengajuan berhasil.'
+            ], 200);
+        } catch (\Exception $e) {
+            DB::connection($model->connection)->rollBack();
+
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * avaluatedRecord function
+     *
+     * @param Request $request
+     * @param [type] $model
+     * @return void
+     */
+    public static function avaluatedRecord(Request $request, $model)
+    {
+        DB::connection($model->connection)->beginTransaction();
+
+        try {
+            $model->status = 'COMPLETED';
+            $model->evaluated_by = $request->user()->userable_id;
+            $model->save();
+
+            DB::connection($model->connection)->commit();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'evaluasi lelang berhasil.'
+            ], 200);
         } catch (\Exception $e) {
             DB::connection($model->connection)->rollBack();
 

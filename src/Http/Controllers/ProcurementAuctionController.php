@@ -112,4 +112,100 @@ class ProcurementAuctionController extends Controller
 
         return ProcurementAuction::destroyRecord($procurementAuction);
     }
+
+    /**
+     * submitted function
+     *
+     * @param Request $request
+     * @param ProcurementAuction $procurementAuction
+     * @return \Illuminate\Http\Response
+     */
+    public function submitted(Request $request, ProcurementAuction $procurementAuction)
+    {
+        Gate::authorize('update', $procurementAuction);
+
+        $request->validate([]);
+
+        return ProcurementAuction::submittedRecord($request, $procurementAuction);
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param Request $request
+     * @param ProcurementAuction $procurementAuction
+     * @return \Illuminate\Http\Response
+     */
+    public function qualified(Request $request, ProcurementAuction $procurementAuction)
+    {
+        Gate::authorize('update', $procurementAuction);
+
+        $request->validate([]);
+
+        return ProcurementAuction::qualifiedRecord($request, $procurementAuction);
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param Request $request
+     * @param ProcurementAuction $procurementAuction
+     * @return \Illuminate\Http\Response
+     */
+    public function rejected(Request $request, ProcurementAuction $procurementAuction)
+    {
+        Gate::authorize('update', $procurementAuction);
+
+        $request->validate([]);
+
+        return ProcurementAuction::rejectedRecord($request, $procurementAuction);
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param Request $request
+     * @param ProcurementAuction $procurementAuction
+     * @return \Illuminate\Http\Response
+     */
+    public function verified(Request $request, ProcurementAuction $procurementAuction)
+    {
+        Gate::authorize('update', $procurementAuction);
+
+        $request->validate([]);
+
+        return ProcurementAuction::verifiedRecord($request, $procurementAuction);
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param Request $request
+     * @param ProcurementAuction $procurementAuction
+     * @return \Illuminate\Http\Response
+     */
+    public function aborted(Request $request, ProcurementAuction $procurementAuction)
+    {
+        Gate::authorize('update', $procurementAuction);
+
+        $request->validate([]);
+
+        return ProcurementAuction::abortedRecord($request, $procurementAuction);
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param Request $request
+     * @param ProcurementAuction $procurementAuction
+     * @return \Illuminate\Http\Response
+     */
+    public function avaluated(Request $request, ProcurementAuction $procurementAuction)
+    {
+        Gate::authorize('update', $procurementAuction);
+
+        $request->validate([]);
+
+        return ProcurementAuction::avaluatedRecord($request, $procurementAuction);
+    }
 }
