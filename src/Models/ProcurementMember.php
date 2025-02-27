@@ -136,9 +136,9 @@ class ProcurementMember extends Model
             $model->role = 'POKJA';
             $parent->members()->save($model);
 
-            DB::connection($model->connection)->commit();
-
             ProcurementBiodataCreated::dispatch($model);
+            
+            DB::connection($model->connection)->commit();
 
             return new MemberResource($model);
         } catch (\Exception $e) {

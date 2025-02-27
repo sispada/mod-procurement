@@ -148,9 +148,9 @@ class ProcurementOfficer extends Model
             
             $parent->officers()->save($model);
 
-            DB::connection($model->connection)->commit();
-
             ProcurementBiodataCreated::dispatch($model);
+
+            DB::connection($model->connection)->commit();
 
             return new OfficerResource($model);
         } catch (\Exception $e) {

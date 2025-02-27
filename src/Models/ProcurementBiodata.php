@@ -149,9 +149,9 @@ class ProcurementBiodata extends Model
             $model->role = $request->role;
             $model->save();
 
-            DB::connection($model->connection)->commit();
-
             ProcurementBiodataCreated::dispatch($model);
+
+            DB::connection($model->connection)->commit();
 
             return new BiodataResource($model);
         } catch (\Exception $e) {
