@@ -1,21 +1,10 @@
 <template>
 	<form-show with-helpdesk>
-		<template
-			v-slot:default="{
-				combos: { workunits },
-				record,
-			}"
-		>
-			<div
-				class="position-absolute"
-				style="top: 0; right: 0"
-			>
-				<v-chip
-					class="mt-3 mr-4"
-					color="blue"
-					size="small"
-					>{{ record.status }}</v-chip
-				>
+		<template v-slot:default="{ combos: { workunits }, record }">
+			<div class="position-absolute" style="top: 0; right: 0">
+				<v-chip class="mt-3 mr-4" color="blue" size="small">{{
+					record.status
+				}}</v-chip>
 			</div>
 
 			<v-card-text>
@@ -31,10 +20,7 @@
 
 					<v-col cols="6">
 						<v-select
-							:items="[
-								'CONSTRUCTION',
-								'NONE-CONSTRUCTION',
-							]"
+							:items="['CONSTRUCTION', 'NONE-CONSTRUCTION']"
 							label="Tipe"
 							v-model="record.type"
 							hide-details
@@ -163,12 +149,7 @@
 			v-slot:info="{
 				combos: { workgroups },
 				record,
-				statuses: {
-					isKASUBAG,
-					isKABAG,
-					isPOKJA,
-					isPPK,
-				},
+				statuses: { isKASUBAG, isKABAG, isPOKJA, isPPK },
 				theme,
 			}"
 		>
@@ -196,10 +177,7 @@
 				<!-- KASUBAG -->
 				<v-col
 					cols="6"
-					v-if="
-						record.status === 'SUBMITTED' &&
-						isKASUBAG
-					"
+					v-if="record.status === 'SUBMITTED' && isKASUBAG"
 				>
 					<v-btn
 						class="mt-3"
@@ -212,10 +190,7 @@
 
 				<v-col
 					cols="6"
-					v-if="
-						record.status === 'SUBMITTED' &&
-						isKASUBAG
-					"
+					v-if="record.status === 'SUBMITTED' && isKASUBAG"
 				>
 					<v-btn
 						class="mt-3"
@@ -229,10 +204,7 @@
 				<!-- KABAG -->
 				<v-col
 					cols="12"
-					v-if="
-						record.status === 'QUALIFIED' &&
-						isKABAG
-					"
+					v-if="record.status === 'QUALIFIED' && isKABAG"
 				>
 					<v-select
 						:items="workgroups"
@@ -242,13 +214,7 @@
 					></v-select>
 				</v-col>
 
-				<v-col
-					cols="6"
-					v-if="
-						record.status === 'QUALIFIED' &&
-						isKABAG
-					"
-				>
+				<v-col cols="6" v-if="record.status === 'QUALIFIED' && isKABAG">
 					<v-btn
 						class="mt-3"
 						:color="theme"
@@ -258,13 +224,7 @@
 					>
 				</v-col>
 
-				<v-col
-					cols="6"
-					v-if="
-						record.status === 'QUALIFIED' &&
-						isKABAG
-					"
-				>
+				<v-col cols="6" v-if="record.status === 'QUALIFIED' && isKABAG">
 					<v-btn
 						class="mt-3"
 						color="deep-orange"
@@ -275,13 +235,7 @@
 				</v-col>
 
 				<!-- POKJA -->
-				<v-col
-					cols="12"
-					v-if="
-						record.status === 'VERIFIED' &&
-						isPOKJA
-					"
-				>
+				<v-col cols="12" v-if="record.status === 'VERIFIED' && isPOKJA">
 					<v-btn
 						class="mt-3"
 						:color="theme"
@@ -301,78 +255,60 @@ export default {
 
 	methods: {
 		submitAuction: function (record) {
-			this.$http(
-				`procurement/api/auction/${record.id}/submitted`,
-				{
-					method: "POST",
-					params: { ...record, _method: "PUT" },
-				}
-			).then(() => {
+			this.$http(`procurement/api/auction/${record.id}/submitted`, {
+				method: "POST",
+				params: { ...record, _method: "PUT" },
+			}).then(() => {
 				this.$router.push({
 					name: "procurement-auction",
 				});
 			});
 		},
 		qualifiedAuction: function (record) {
-			this.$http(
-				`procurement/api/auction/${record.id}/qualified`,
-				{
-					method: "POST",
-					params: { ...record, _method: "PUT" },
-				}
-			).then(() => {
+			this.$http(`procurement/api/auction/${record.id}/qualified`, {
+				method: "POST",
+				params: { ...record, _method: "PUT" },
+			}).then(() => {
 				this.$router.push({
 					name: "procurement-auction",
 				});
 			});
 		},
 		rejectedAuction: function (record) {
-			this.$http(
-				`procurement/api/auction/${record.id}/rejected`,
-				{
-					method: "POST",
-					params: { ...record, _method: "PUT" },
-				}
-			).then(() => {
+			this.$http(`procurement/api/auction/${record.id}/rejected`, {
+				method: "POST",
+				params: { ...record, _method: "PUT" },
+			}).then(() => {
 				this.$router.push({
 					name: "procurement-auction",
 				});
 			});
 		},
 		verifiedAuction: function (record) {
-			this.$http(
-				`procurement/api/auction/${record.id}/verified`,
-				{
-					method: "POST",
-					params: { ...record, _method: "PUT" },
-				}
-			).then(() => {
+			this.$http(`procurement/api/auction/${record.id}/verified`, {
+				method: "POST",
+				params: { ...record, _method: "PUT" },
+			}).then(() => {
 				this.$router.push({
 					name: "procurement-auction",
 				});
 			});
 		},
 		abortedAuction: function (record) {
-			this.$http(
-				`procurement/api/auction/${record.id}/aborted`,
-				{
-					method: "PUT",
-					params: { ...record, _method: "PUT" },
-				}
-			).then(() => {
+			this.$http(`procurement/api/auction/${record.id}/aborted`, {
+				method: "PUT",
+				params: { ...record, _method: "PUT" },
+			}).then(() => {
 				this.$router.push({
 					name: "procurement-auction",
 				});
 			});
 		},
 		evaluatedAuction: function (record) {
-			this.$http(
-				`procurement/api/auction/${record.id}/avaluated`,
-				{
-					method: "PUT",
-					params: { ...record, _method: "PUT" },
-				}
-			).then(() => {
+			this.$http(`procurement/api/auction/${record.id}/avaluated`, {
+				method: "PUT",
+				params: { ...record, _method: "PUT" },
+			}).then(() => {
 				this.$router.push({
 					name: "procurement-auction",
 				});
