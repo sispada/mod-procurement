@@ -165,8 +165,8 @@ class ProcurementAuction extends Model
     {
         return [
             'canCreate' => $request->user()->hasLicenseAs('procurement-ppk'),
-            'canEdit' => $request->user()->hasLicenseAs('procurement-ppk') && optional($model)->status === 'DRAFTED',
-            'canUpdate' => $request->user()->hasLicenseAs('procurement-ppk') && optional($model)->status === 'DRAFTED',
+            'canEdit' => $request->user()->hasLicenseAs('procurement-ppk') && (optional($model)->status === 'DRAFTED' || optional($model)->status === 'REJECTED'),
+            'canUpdate' => $request->user()->hasLicenseAs('procurement-ppk') && (optional($model)->status === 'DRAFTED' || optional($model)->status === 'REJECTED'),
             'canDelete' => $request->user()->hasLicenseAs('procurement-ppk') && optional($model)->status === 'DRAFTED',
             'canRestore' => $request->user()->hasLicenseAs('procurement-ppk') && optional($model)->status === 'DRAFTED',
             'canDestroy' => $request->user()->hasLicenseAs('procurement-ppk') && optional($model)->status === 'DRAFTED',

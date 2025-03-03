@@ -179,7 +179,9 @@
 				<v-col
 					cols="12"
 					v-if="
-						record.status === 'DRAFTED' && isPPK
+						(record.status === 'DRAFTED' ||
+							record.status === 'REJECTED') &&
+						isPPK
 					"
 				>
 					<v-btn
