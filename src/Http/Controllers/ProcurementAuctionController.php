@@ -122,7 +122,7 @@ class ProcurementAuctionController extends Controller
      */
     public function submitted(Request $request, ProcurementAuction $procurementAuction)
     {
-        Gate::authorize('update', $procurementAuction);
+        Gate::authorize('submitted', $procurementAuction);
 
         $request->validate([]);
 
@@ -138,7 +138,7 @@ class ProcurementAuctionController extends Controller
      */
     public function qualified(Request $request, ProcurementAuction $procurementAuction)
     {
-        Gate::authorize('update', $procurementAuction);
+        Gate::authorize('qualified', $procurementAuction);
 
         $request->validate([]);
 
@@ -154,7 +154,7 @@ class ProcurementAuctionController extends Controller
      */
     public function rejected(Request $request, ProcurementAuction $procurementAuction)
     {
-        Gate::authorize('update', $procurementAuction);
+        Gate::authorize('qualified', $procurementAuction);
 
         $request->validate([]);
 
@@ -170,7 +170,7 @@ class ProcurementAuctionController extends Controller
      */
     public function verified(Request $request, ProcurementAuction $procurementAuction)
     {
-        Gate::authorize('update', $procurementAuction);
+        Gate::authorize('verified', $procurementAuction);
 
         $request->validate([]);
 
@@ -186,7 +186,7 @@ class ProcurementAuctionController extends Controller
      */
     public function aborted(Request $request, ProcurementAuction $procurementAuction)
     {
-        Gate::authorize('update', $procurementAuction);
+        Gate::authorize('verified', $procurementAuction);
 
         $request->validate([]);
 
@@ -202,7 +202,7 @@ class ProcurementAuctionController extends Controller
      */
     public function avaluated(Request $request, ProcurementAuction $procurementAuction)
     {
-        Gate::authorize('update', $procurementAuction);
+        Gate::authorize('avaluated', $procurementAuction);
 
         $request->validate([]);
 

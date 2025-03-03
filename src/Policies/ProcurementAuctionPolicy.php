@@ -53,6 +53,50 @@ class ProcurementAuctionPolicy
     }
 
     /**
+     * Determine whether the user can submitted the model.
+     */
+    public function submitted(SystemUser $user, ProcurementAuction $procurementAuction): bool
+    {
+        return 
+            $user->hasLicenseAs('procurement-ppk') && 
+            $user->hasPermission('update-procurement-auction') && 
+            ($procurementAuction->status === 'DRAFTED' || $procurementAuction->status === 'REJECTED');
+    }
+
+    /**
+     * Determine whether the user can submitted the model.
+     */
+    public function qualified(SystemUser $user, ProcurementAuction $procurementAuction): bool
+    {
+        return 
+            $user->hasLicenseAs('procurement-kasubag') && 
+            $user->hasPermission('update-procurement-auction') && 
+            $procurementAuction->status === 'SUBMITTED';
+    }
+
+    /**
+     * Determine whether the user can submitted the model.
+     */
+    public function verified(SystemUser $user, ProcurementAuction $procurementAuction): bool
+    {
+        return 
+            $user->hasLicenseAs('procurement-kabag') && 
+            $user->hasPermission('update-procurement-auction') && 
+            $procurementAuction->status === 'QUALIFIED';
+    }
+
+    /**
+     * Determine whether the user can submitted the model.
+     */
+    public function avaluated(SystemUser $user, ProcurementAuction $procurementAuction): bool
+    {
+        return 
+            $user->hasLicenseAs('procurement-pokja') && 
+            $user->hasPermission('update-procurement-auction') && 
+            $procurementAuction->status === 'VERIFIED';
+    }
+
+    /**
      * Determine whether the user can delete the model.
      */
     public function delete(SystemUser $user, ProcurementAuction $procurementAuction): bool
