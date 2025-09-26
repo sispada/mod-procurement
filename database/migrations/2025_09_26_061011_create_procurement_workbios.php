@@ -10,12 +10,11 @@ return new class () extends Migration {
      */
     public function up(): void
     {
-        Schema::create('procurement_workunits', function (Blueprint $table) {
+        Schema::create('procurement_workbios', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->index();
-            $table->string('slug', 40)->unique();
-            $table->jsonb('meta')->nullable();
-            $table->softDeletes();
+            $table->string('name');
+            $table->foreignId('workgroup_id');
+            $table->foreignId('biodata_id');
             $table->timestamps();
         });
     }
@@ -25,6 +24,6 @@ return new class () extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('procurement_workunits');
+        Schema::dropIfExists('procurement_workbios');
     }
 };

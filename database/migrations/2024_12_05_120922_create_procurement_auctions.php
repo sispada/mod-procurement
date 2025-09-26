@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class () extends Migration {
     /**
      * Run the migrations.
      */
@@ -15,24 +14,11 @@ return new class extends Migration
             $table->id();
             $table->string('name')->index();
             $table->string('slug', 40)->unique();
-
-            $table->enum('type', [
-                'CONSTRUCTION',
-                'NONE-CONSTRUCTION'
-            ])->index()->default('NONE-CONSTRUCTION');
-
-            $table->enum('method', [
-                'DIKECUALIKAN',
-                'E-PURCHASING',
-                'TENDER',
-                'TENDER-CEPAT',
-                'PENGADAAN-LANGSUNG',
-                'PENUNJUKAN-LANGSUNG'
-            ])->index()->default('E-PURCHASING');
-
+            $table->enum('mode', ['PPBJ', 'POKJA'])->default('PPBJ');
+            $table->foreignId('type_id');
+            $table->foreignId('method_id');
             $table->tinyInteger('month')->index();
             $table->smallInteger('year')->index();
-
             $table->enum('source', [
                 'APBN',
                 'APBNP',
@@ -43,13 +29,12 @@ return new class extends Migration
                 'BUMN',
                 'BUMD'
             ])->index()->default('APBD');
-
             $table->double('ceiling')->default(0);
             $table->double('realization')->default(0);
+            $table->foreignId('officer_id')->nullable();
             $table->foreignId('workgroup_id')->nullable();
             $table->foreignId('workunit_id');
             $table->string('workunit_name');
-
             $table->enum('status', [
                 'DRAFTED',
                 'SUBMITTED',
@@ -64,7 +49,6 @@ return new class extends Migration
                 'REPORTED',
                 'COMPLETED'
             ])->index()->default('DRAFTED');
-
             $table->foreignId('drafted_by');
             $table->foreignId('submitted_by')->nullable();
             $table->foreignId('qualified_by')->nullable();
@@ -72,7 +56,6 @@ return new class extends Migration
             $table->foreignId('verified_by')->nullable();
             $table->foreignId('aborted_by')->nullable();
             $table->foreignId('evaluated_by')->nullable();
-
             $table->string('assignments')->nullable();
             $table->string('reviews')->nullable();
             $table->jsonb('documents')->nullable();

@@ -6,9 +6,9 @@ use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Module\Procurement\Models\ProcurementBiodata;
-use Module\Procurement\Events\ProcurementBiodataCreated;
+use Module\Procurement\Models\ProcurementWorkbio;
 
-class BiodataImport implements ToCollection, WithHeadingRow
+class WorkbioImport implements ToCollection, WithHeadingRow
 {
     /**
      * The construct function
@@ -21,30 +21,26 @@ class BiodataImport implements ToCollection, WithHeadingRow
     }
 
     /**
-     * @param Collection $rows
-     */
+    * @param Collection $rows
+    */
     public function collection(Collection $rows)
     {
-        $this->command->info('biodata_table');
+        $this->command->info('_table');
         $this->command->getOutput()->progressStart(count($rows));
 
         foreach ($rows as $row) {
             $this->command->getOutput()->progressAdvance();
 
-            $record = (object) $row->toArray();
-            $slug   = trim(str_replace(' ', '', $record->slug));
-
             /** CREATE NEW RECORD */
-            $model = new ProcurementBiodata();
-            $model->name = $record->name;
-            $model->slug = strlen($slug) < 18 ? null : $slug;
-            $model->section = $record->section;
-            $model->position = $record->position;
-            $model->role = $record->role;
-            $model->workunit_id = 39;
-            $model->save();
+            $record  = (object) $row->toArray();
+            $slug    = trim(str_replace(' ', '', $record->biodata_id));
+            $biodata = ProcurementBiodata::firstWhere('slug', $slug);
 
-            // ProcurementBiodataCreated::dispatch($model);
+            $model = new ProcurementWorkbio();
+            $model->name = $biodata->name;
+            $model->workgroup_id = $record->workgroup_id;
+            $model->biodata_id = $biodata->id;
+            $model->save();
         }
 
         $this->command->getOutput()->progressFinish();

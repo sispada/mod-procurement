@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class () extends Migration {
     /**
      * Run the migrations.
      */
@@ -17,9 +16,8 @@ return new class extends Migration
             $table->string('slug', 18)->index()->nullable();
             $table->string('section')->nullable();
             $table->string('position')->nullable();
-            $table->foreignId('workgroup_id')->nullable();
             $table->foreignId('workunit_id')->nullable();
-            $table->enum('role', ['PPK', 'KASUBAG', 'KABAG', 'POKJA', 'ADMINISTRATOR', 'STAFF'])->index()->default('STAFF');
+            $table->enum('role', ['PPK', 'KASUBAG', 'KABAG', 'PPBJ', 'ADMINISTRATOR', 'STAFF'])->index()->nullable();
             $table->jsonb('meta')->nullable();
             $table->softDeletes();
             $table->timestamps();

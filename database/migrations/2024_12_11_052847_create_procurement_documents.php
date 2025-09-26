@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class () extends Migration {
     /**
      * Run the migrations.
      */
@@ -16,7 +15,7 @@ return new class extends Migration
             $table->string('name')->index();
             $table->string('slug', 40)->unique();
             $table->string('mime')->default('application/pdf');
-            $table->mediumInteger('maxsize')->default(2000000);
+            $table->mediumInteger('maxsize')->default(2048);
             $table->jsonb('meta')->nullable();
             $table->softDeletes();
             $table->timestamps();

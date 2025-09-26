@@ -10,11 +10,11 @@ return new class () extends Migration {
      */
     public function up(): void
     {
-        Schema::create('procurement_workunits', function (Blueprint $table) {
+        Schema::create('procurement_methods', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->index();
-            $table->string('slug', 40)->unique();
-            $table->jsonb('meta')->nullable();
+            $table->string('name');
+            $table->string('slug')->index();
+            $table->boolean('ppbj')->default(false);
             $table->softDeletes();
             $table->timestamps();
         });
@@ -25,6 +25,6 @@ return new class () extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('procurement_workunits');
+        Schema::dropIfExists('procurement_methods');
     }
 };
