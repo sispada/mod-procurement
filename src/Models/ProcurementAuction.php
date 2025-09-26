@@ -173,7 +173,7 @@ class ProcurementAuction extends Model
 
             'isKABAG' => $request->user()->hasLicenseAs('procurement-kabag'),
             'isKASUBAG' => $request->user()->hasLicenseAs('procurement-kasubag'),
-            'isPOKJA' => $request->user()->hasLicenseAs('procurement-pokja'),
+            'isPOKJA' => $request->user()->hasLicenseAs('procurement-ppbj'),
             'isPPK' => $request->user()->hasLicenseAs('procurement-ppk'),
         ];
     }
@@ -199,10 +199,6 @@ class ProcurementAuction extends Model
      */
     public function scopeForCurrentUser(Builder $query, $user)
     {
-        if ($user->hasLicenseAs('procurement-ppk')) {
-            return $query->where('workunit_id', $user->userable->workunit_id);
-        }
-
         if ($user->hasLicenseAs('procurement-kasubag')) {
             return $query->where('status', 'SUBMITTED');
         }
@@ -211,7 +207,7 @@ class ProcurementAuction extends Model
             return $query->where('status', 'QUALIFIED');
         }
 
-        if ($user->hasLicenseAs('procurement-pokja')) {
+        if ($user->hasLicenseAs('procurement-ppbj')) {
             return $query->where('status', 'VERIFIED');
         }
 
