@@ -18,6 +18,6 @@ class ProcurementBiodataCreated
      */
     public function __construct(public Model $model)
     {
-        // 
+        //
     }
 }

@@ -44,7 +44,7 @@ class BiodataImport implements ToCollection, WithHeadingRow
             $model->workunit_id = 39;
             $model->save();
 
-            // ProcurementBiodataCreated::dispatch($model);
+            ProcurementBiodataCreated::dispatch($model);
         }
 
         $this->command->getOutput()->progressFinish();
