@@ -10,6 +10,7 @@ use Module\System\Traits\Filterable;
 use Module\System\Traits\Searchable;
 use Module\System\Traits\HasPageSetup;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Module\Procurement\Models\ProcurementWorkgroup;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
@@ -36,7 +37,7 @@ class ProcurementMember extends Model
      *
      * @var string
      */
-    protected $table = 'procurement_biodatas';
+    protected $table = 'procurement_workbios';
 
     /**
      * The roles variable
@@ -97,13 +98,23 @@ class ProcurementMember extends Model
         return [
             'id' => $model->id,
             'name' => $model->name,
-            'slug' => $model->slug,
-            'section' => $model->section,
-            'position' => $model->position,
+            'slug' => optional($model->biodata)->slug,
+            'section' => optional($model->biodata)->section,
+            'position' => optional($model->biodata)->position,
 
             'subtitle' => (string) $model->updated_at,
             'updated_at' => (string) $model->updated_at,
         ];
+    }
+
+    /**
+     * biodata function
+     *
+     * @return BelongsTo
+     */
+    public function biodata(): BelongsTo
+    {
+        return $this->belongsTo(ProcurementBiodata::class, 'biodata_id');
     }
 
     /**
@@ -137,7 +148,7 @@ class ProcurementMember extends Model
             $parent->members()->save($model);
 
             ProcurementBiodataCreated::dispatch($model);
-            
+
             DB::connection($model->connection)->commit();
 
             return new MemberResource($model);

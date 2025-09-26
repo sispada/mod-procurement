@@ -25,6 +25,7 @@ class ProcurementMemberController extends Controller
         return new MemberCollection(
             $procurementWorkgroup
                 ->members()
+                ->with(['biodata'])
                 ->applyMode($request->trashed)
                 ->filter($request->filters)
                 ->search($request->findBy)

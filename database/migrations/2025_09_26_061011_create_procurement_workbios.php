@@ -15,6 +15,7 @@ return new class () extends Migration {
             $table->string('name');
             $table->foreignId('workgroup_id');
             $table->foreignId('biodata_id');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
