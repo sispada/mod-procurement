@@ -93,6 +93,7 @@ class ProcurementAuction extends Model
     {
         return [
             ['title' => 'Name', 'value' => 'name'],
+            ['title' => 'Mode', 'value' => 'mode'],
             ['title' => 'Pagu', 'value' => 'ceiling'],
             ['title' => 'Unit Kerja', 'value' => 'workunit_name'],
             ['title' => 'Status', 'value' => 'status', 'sortable' => false, 'width' => '170'],
@@ -108,14 +109,16 @@ class ProcurementAuction extends Model
     public static function mapResource(Request $request, $model): array
     {
         return [
-            'id' => $model->id,
+           'id' => $model->id,
             'name' => $model->name,
-            'type' => $model->type,
-            'method' => $model->method,
+            'mode' => $model->mode,
+            'type_id' => $model->type_id,
+            'method_id' => $model->method_id,
             'month' => $model->month,
             'year' => $model->year,
             'source' => $model->source,
             'ceiling' => 'Rp. ' . number_format($model->ceiling, 0, ',', '.'),
+            'officer_id' => $model->officer_id,
             'workunit' => [
                 'title' => $model->workunit_name,
                 'value' => $model->workunit_id
@@ -139,12 +142,14 @@ class ProcurementAuction extends Model
         return [
             'id' => $model->id,
             'name' => $model->name,
-            'type' => $model->type,
-            'method' => $model->method,
+            'mode' => $model->mode,
+            'type_id' => $model->type_id,
+            'method_id' => $model->method_id,
             'month' => $model->month,
             'year' => $model->year,
             'source' => $model->source,
             'ceiling' => floatval($model->ceiling),
+            'officer_id' => $model->officer_id,
             'workunit' => [
                 'title' => $model->workunit_name,
                 'value' => $model->workunit_id
@@ -164,17 +169,16 @@ class ProcurementAuction extends Model
     public static function mapStatuses(Request $request, $model = null): array
     {
         return [
-            'canCreate' => $request->user()->hasLicenseAs('procurement-ppk'),
-            'canEdit' => $request->user()->hasLicenseAs('procurement-ppk') && (optional($model)->status === 'DRAFTED' || optional($model)->status === 'REJECTED'),
-            'canUpdate' => $request->user()->hasLicenseAs('procurement-ppk') && (optional($model)->status === 'DRAFTED' || optional($model)->status === 'REJECTED'),
-            'canDelete' => $request->user()->hasLicenseAs('procurement-ppk') && optional($model)->status === 'DRAFTED',
-            'canRestore' => $request->user()->hasLicenseAs('procurement-ppk') && optional($model)->status === 'DRAFTED',
-            'canDestroy' => $request->user()->hasLicenseAs('procurement-ppk') && optional($model)->status === 'DRAFTED',
+            'canCreate' => false,
+            'canEdit' => false,
+            'canUpdate' => false,
+            'canDelete' => false,
+            'canRestore' => false,
+            'canDestroy' => false,
 
             'isKABAG' => $request->user()->hasLicenseAs('procurement-kabag'),
             'isKASUBAG' => $request->user()->hasLicenseAs('procurement-kasubag'),
             'isPOKJA' => $request->user()->hasLicenseAs('procurement-ppbj'),
-            'isPPK' => $request->user()->hasLicenseAs('procurement-ppk'),
         ];
     }
 
@@ -186,7 +190,7 @@ class ProcurementAuction extends Model
     protected static function booted(): void
     {
         static::addGlobalScope('onlyProcessed', function (Builder $query) {
-            $query->whereNotIn('status', ['COMPLETED', 'ABORTED']);
+            $query->whereNotIn('status', ['DRAFTED', 'COMPLETED', 'ABORTED']);
         });
     }
 
@@ -212,114 +216,6 @@ class ProcurementAuction extends Model
         }
 
         return $query;
-    }
-
-    /**
-     * The model store method
-     *
-     * @param Request $request
-     * @return void
-     */
-    public static function storeRecord(Request $request)
-    {
-        $model = new static();
-
-        DB::connection($model->connection)->beginTransaction();
-
-        try {
-            $model->name = $request->name;
-            $model->slug = sha1(str($request->name)->slug());
-            $model->type = $request->type;
-            $model->method = $request->method;
-            $model->month = $request->month;
-            $model->year = $request->year;
-            $model->source = $request->source;
-            $model->ceiling = $request->ceiling;
-            $model->workunit_id = $request->workunit['value'];
-            $model->workunit_name = $request->workunit['title'];
-            $model->status = 'DRAFTED';
-            $model->drafted_by = $request->user()->userable_id;
-            $model->save();
-
-            DB::connection($model->connection)->commit();
-
-            return new AuctionResource($model);
-        } catch (\Exception $e) {
-            DB::connection($model->connection)->rollBack();
-
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage()
-            ], 500);
-        }
-    }
-
-    /**
-     * The model update method
-     *
-     * @param Request $request
-     * @param [type] $model
-     * @return void
-     */
-    public static function updateRecord(Request $request, $model)
-    {
-        DB::connection($model->connection)->beginTransaction();
-
-        try {
-            $model->name = $request->name;
-            $model->type = $request->type;
-            $model->method = $request->method;
-            $model->month = $request->month;
-            $model->year = $request->year;
-            $model->source = $request->source;
-            $model->ceiling = $request->ceiling;
-            $model->workunit_id = $request->workunit['value'];
-            $model->workunit_name = $request->workunit['title'];
-            $model->save();
-
-            DB::connection($model->connection)->commit();
-
-            return new AuctionResource($model);
-        } catch (\Exception $e) {
-            DB::connection($model->connection)->rollBack();
-
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage()
-            ], 500);
-        }
-    }
-
-    /**
-     * submittedRecord function
-     *
-     * @param Request $request
-     * @param [type] $model
-     * @return void
-     */
-    public static function submittedRecord(Request $request, $model)
-    {
-        DB::connection($model->connection)->beginTransaction();
-
-        try {
-            $model->status = 'SUBMITTED';
-            $model->submitted_by = $request->user()->userable_id;
-            $model->save();
-
-            DB::connection($model->connection)->commit();
-
-            return response()->json([
-                'success' => true,
-                'message' => 'kirim pengajuan berhasil.'
-            ], 200);
-        } catch (\Exception $e) {
-            DB::connection($model->connection)->rollBack();
-
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage()
-            ], 500);
-        }
     }
 
     /**

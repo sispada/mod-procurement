@@ -38,15 +38,6 @@ export default {
 				},
 
 				{
-					path: "create",
-					name: "procurement-auction-create",
-					component: () =>
-						import(
-							/* webpackChunkName: "procurement" */ "@modules/procurement/frontend/pages/auction/crud/create.vue"
-						),
-				},
-
-				{
 					path: ":auction/edit",
 					name: "procurement-auction-edit",
 					component: () =>

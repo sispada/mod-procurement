@@ -23,9 +23,8 @@ Route::put('auction/{procurementAuction}/avaluated', [ProcurementAuctionControll
 
 Route::put('auction/{procurementAuction}/restore', [ProcurementAuctionController::class, 'restore']);
 Route::delete('auction/{procurementAuction}/force', [ProcurementAuctionController::class, 'forceDelete']);
-Route::resource('auction', ProcurementAuctionController::class)->parameters([
-    'auction' => 'procurementAuction'
-]);
+Route::get('auction/{procurementAuction}', [ProcurementAuctionController::class, 'show']);
+Route::get('auction', [ProcurementAuctionController::class, 'index']);
 
 Route::put('history/{procurementHistory}/restore', [ProcurementHistoryController::class, 'restore']);
 Route::delete('history/{procurementHistory}/force', [ProcurementHistoryController::class, 'forceDelete']);
