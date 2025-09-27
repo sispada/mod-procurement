@@ -56,6 +56,20 @@ class ProcurementDoctype extends Model
     protected $defaultOrder = 'name';
 
     /**
+     * mapResource function
+     *
+     * @param Request $request
+     * @return array
+     */
+    public static function mapResource(Request $request, $model): array
+    {
+        return [
+            'id' => $model->id,
+            'name' => $model->name,
+        ];
+    }
+
+    /**
      * The model store method
      *
      * @param Request $request
