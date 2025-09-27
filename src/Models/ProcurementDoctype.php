@@ -9,7 +9,6 @@ use Module\System\Traits\Filterable;
 use Module\System\Traits\Searchable;
 use Module\System\Traits\HasPageSetup;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Module\Procurement\Http\Resources\DoctypeResource;
 
 class ProcurementDoctype extends Model
@@ -18,7 +17,6 @@ class ProcurementDoctype extends Model
     use HasMeta;
     use HasPageSetup;
     use Searchable;
-    use SoftDeletes;
 
     /**
      * The connection name for the model.

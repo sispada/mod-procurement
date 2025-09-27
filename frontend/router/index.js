@@ -195,6 +195,52 @@ export default {
 			],
 		},
 
+		// method
+		{
+			path: "method",
+			component: () =>
+				import(
+					/* webpackChunkName: "procurement" */ "@modules/procurement/frontend/pages/method/index.vue"
+				),
+			children: [
+				{
+					path: "",
+					name: "procurement-method",
+					component: () =>
+						import(
+							/* webpackChunkName: "procurement" */ "@modules/procurement/frontend/pages/method/crud/data.vue"
+						),
+				},
+
+				{
+					path: "create",
+					name: "procurement-method-create",
+					component: () =>
+						import(
+							/* webpackChunkName: "procurement" */ "@modules/procurement/frontend/pages/method/crud/create.vue"
+						),
+				},
+
+				{
+					path: ":method/edit",
+					name: "procurement-method-edit",
+					component: () =>
+						import(
+							/* webpackChunkName: "procurement" */ "@modules/procurement/frontend/pages/method/crud/edit.vue"
+						),
+				},
+
+				{
+					path: ":method/show",
+					name: "procurement-method-show",
+					component: () =>
+						import(
+							/* webpackChunkName: "procurement" */ "@modules/procurement/frontend/pages/method/crud/show.vue"
+						),
+				},
+			],
+		},
+
 		// report
 		{
 			path: "report",
@@ -203,6 +249,52 @@ export default {
 				import(
 					/* webpackChunkName: "procurement" */ "@modules/procurement/frontend/pages/report/index.vue"
 				),
+		},
+
+		// type
+		{
+			path: "type",
+			component: () =>
+				import(
+					/* webpackChunkName: "procurement" */ "@modules/procurement/frontend/pages/type/index.vue"
+				),
+			children: [
+				{
+					path: "",
+					name: "procurement-type",
+					component: () =>
+						import(
+							/* webpackChunkName: "procurement" */ "@modules/procurement/frontend/pages/type/crud/data.vue"
+						),
+				},
+
+				{
+					path: "create",
+					name: "procurement-type-create",
+					component: () =>
+						import(
+							/* webpackChunkName: "procurement" */ "@modules/procurement/frontend/pages/type/crud/create.vue"
+						),
+				},
+
+				{
+					path: ":type/edit",
+					name: "procurement-type-edit",
+					component: () =>
+						import(
+							/* webpackChunkName: "procurement" */ "@modules/procurement/frontend/pages/type/crud/edit.vue"
+						),
+				},
+
+				{
+					path: ":type/show",
+					name: "procurement-type-show",
+					component: () =>
+						import(
+							/* webpackChunkName: "procurement" */ "@modules/procurement/frontend/pages/type/crud/show.vue"
+						),
+				},
+			],
 		},
 
 		// workgroup

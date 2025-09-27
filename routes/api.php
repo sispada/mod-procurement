@@ -2,7 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use Module\Procurement\Http\Controllers\DashboardController;
+use Module\Procurement\Http\Controllers\ProcurementTypeController;
 use Module\Procurement\Http\Controllers\ProcurementMemberController;
+use Module\Procurement\Http\Controllers\ProcurementMethodController;
 use Module\Procurement\Http\Controllers\ProcurementAuctionController;
 use Module\Procurement\Http\Controllers\ProcurementBiodataController;
 use Module\Procurement\Http\Controllers\ProcurementHistoryController;
@@ -26,12 +28,6 @@ Route::delete('auction/{procurementAuction}/force', [ProcurementAuctionControlle
 Route::get('auction/{procurementAuction}', [ProcurementAuctionController::class, 'show']);
 Route::get('auction', [ProcurementAuctionController::class, 'index']);
 
-Route::put('history/{procurementHistory}/restore', [ProcurementHistoryController::class, 'restore']);
-Route::delete('history/{procurementHistory}/force', [ProcurementHistoryController::class, 'forceDelete']);
-Route::resource('history', ProcurementHistoryController::class)->parameters([
-    'history' => 'procurementHistory'
-]);
-
 Route::put('biodata/{procurementBiodata}/restore', [ProcurementBiodataController::class, 'restore']);
 Route::delete('biodata/{procurementBiodata}/force', [ProcurementBiodataController::class, 'forceDelete']);
 Route::resource('biodata', ProcurementBiodataController::class)->parameters([
@@ -42,6 +38,24 @@ Route::put('document/{procurementDocument}/restore', [ProcurementDocumentControl
 Route::delete('document/{procurementDocument}/force', [ProcurementDocumentController::class, 'forceDelete']);
 Route::resource('document', ProcurementDocumentController::class)->parameters([
     'document' => 'procurementDocument'
+]);
+
+Route::put('history/{procurementHistory}/restore', [ProcurementHistoryController::class, 'restore']);
+Route::delete('history/{procurementHistory}/force', [ProcurementHistoryController::class, 'forceDelete']);
+Route::resource('history', ProcurementHistoryController::class)->parameters([
+    'history' => 'procurementHistory'
+]);
+
+Route::put('method/{procurementMethod}/restore', [ProcurementMethodController::class, 'restore']);
+Route::delete('method/{procurementMethod}/force', [ProcurementMethodController::class, 'forceDelete']);
+Route::resource('method', ProcurementMethodController::class)->parameters([
+    'method' => 'procurementMethod'
+]);
+
+Route::put('type/{procurementType}/restore', [ProcurementTypeController::class, 'restore']);
+Route::delete('type/{procurementType}/force', [ProcurementTypeController::class, 'forceDelete']);
+Route::resource('type', ProcurementTypeController::class)->parameters([
+    'type' => 'procurementType'
 ]);
 
 Route::put('workgroup/{procurementWorkgroup}/restore', [ProcurementWorkgroupController::class, 'restore']);
