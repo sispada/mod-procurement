@@ -16,7 +16,7 @@ class ProcurementAuctionPolicy
         if ($user->hasLicenseAs('procurement-superadmin')) {
             return true;
         }
-    
+
         return null;
     }
 
@@ -57,9 +57,9 @@ class ProcurementAuctionPolicy
      */
     public function submitted(SystemUser $user, ProcurementAuction $procurementAuction): bool
     {
-        return 
-            $user->hasLicenseAs('procurement-ppk') && 
-            $user->hasPermission('update-procurement-auction') && 
+        return
+            $user->hasLicenseAs('procurement-ppk') &&
+            $user->hasPermission('update-procurement-auction') &&
             ($procurementAuction->status === 'DRAFTED' || $procurementAuction->status === 'REJECTED');
     }
 
@@ -68,9 +68,9 @@ class ProcurementAuctionPolicy
      */
     public function qualified(SystemUser $user, ProcurementAuction $procurementAuction): bool
     {
-        return 
-            $user->hasLicenseAs('procurement-kasubag') && 
-            $user->hasPermission('update-procurement-auction') && 
+        return
+            $user->hasLicenseAs('procurement-kasubag') &&
+            $user->hasPermission('update-procurement-auction') &&
             $procurementAuction->status === 'SUBMITTED';
     }
 
@@ -79,9 +79,9 @@ class ProcurementAuctionPolicy
      */
     public function verified(SystemUser $user, ProcurementAuction $procurementAuction): bool
     {
-        return 
-            $user->hasLicenseAs('procurement-kabag') && 
-            $user->hasPermission('update-procurement-auction') && 
+        return
+            $user->hasLicenseAs('procurement-kabag') &&
+            $user->hasPermission('update-procurement-auction') &&
             $procurementAuction->status === 'QUALIFIED';
     }
 
@@ -90,9 +90,9 @@ class ProcurementAuctionPolicy
      */
     public function avaluated(SystemUser $user, ProcurementAuction $procurementAuction): bool
     {
-        return 
-            $user->hasLicenseAs('procurement-pokja') && 
-            $user->hasPermission('update-procurement-auction') && 
+        return
+            $user->hasLicenseAs('procurement-pokja') &&
+            $user->hasPermission('update-procurement-auction') &&
             $procurementAuction->status === 'VERIFIED';
     }
 

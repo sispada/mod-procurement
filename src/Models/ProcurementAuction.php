@@ -69,6 +69,9 @@ class ProcurementAuction extends Model
     public static function mapCombos(Request $request): array
     {
         return [
+            'types' => ProcurementType::forCombo('name AS title', 'id AS value', 'min'),
+            'methods' => ProcurementMethod::forCombo(),
+            'officers' => ProcurementBiodata::where('role', 'PPBJ')->forCombo(),
             'workgroups' => ProcurementWorkgroup::forCombo(),
             'workunits' => optional($request->user()->userable)->workunit_id ? ProcurementWorkunit::where('id', $request->user()->userable->workunit_id)->forCombo() : []
         ];

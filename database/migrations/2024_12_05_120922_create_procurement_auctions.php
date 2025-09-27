@@ -60,6 +60,7 @@ return new class () extends Migration {
             $table->string('reviews')->nullable();
             $table->jsonb('documents')->nullable();
             $table->jsonb('reports')->nullable();
+            $table->jsonb('logs')->nullable();
             $table->jsonb('meta')->nullable();
             $table->softDeletes();
             $table->timestamps();
