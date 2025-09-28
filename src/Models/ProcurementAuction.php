@@ -97,7 +97,7 @@ class ProcurementAuction extends Model
         return [
             ['title' => 'Name', 'value' => 'name'],
             ['title' => 'Mode', 'value' => 'mode'],
-            ['title' => 'Pagu', 'value' => 'ceiling'],
+            ['title' => 'Pagu', 'value' => 'ceiling_formatted'],
             ['title' => 'Unit Kerja', 'value' => 'workunit_name'],
             ['title' => 'Status', 'value' => 'status', 'sortable' => false, 'width' => '170'],
         ];
@@ -210,15 +210,26 @@ class ProcurementAuction extends Model
     public function scopeForCurrentUser(Builder $query, $user)
     {
         if ($user->hasLicenseAs('procurement-kasubag')) {
-            return $query->where('status', 'SUBMITTED');
+            return $query
+                ->where('status', 'SUBMITTED');
         }
 
         if ($user->hasLicenseAs('procurement-kabag')) {
-            return $query->where('status', 'QUALIFIED');
+            return $query
+                ->where('status', 'QUALIFIED');
         }
 
         if ($user->hasLicenseAs('procurement-ppbj')) {
-            return $query->where('status', 'VERIFIED');
+            return $query
+                ->where('status', 'VERIFIED')
+                ->where('officer_id', $user->userable->id)
+                ->orWhere(function ($qry) use ($user) {
+                    $qry->where('status', 'VERIFIED')
+                        ->whereIn(
+                            'workgroup_id',
+                            $user->userable->workgroups->pluck('workgroup_id')
+                        );
+                });
         }
 
         return $query;

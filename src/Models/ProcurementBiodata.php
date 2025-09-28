@@ -11,6 +11,7 @@ use Module\System\Traits\Searchable;
 use Module\System\Traits\HasPageSetup;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Module\Procurement\Http\Resources\BiodataResource;
@@ -120,13 +121,28 @@ class ProcurementBiodata extends Model
     }
 
     /**
-     * Undocumented function
+     * user function
      *
      * @return MorphOne
      */
     public function user(): MorphOne
     {
         return $this->morphOne(SystemUser::class, 'userable');
+    }
+
+    /**
+     * workgroups function
+     *
+     * @return BelongsToMany
+     */
+    public function workgroups(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            ProcurementWorkgroup::class,
+            'procurement_workbios',
+            'biodata_id',
+            'workgroup_id'
+        );
     }
 
     /**
