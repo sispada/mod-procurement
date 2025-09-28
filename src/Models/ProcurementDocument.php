@@ -128,6 +128,29 @@ class ProcurementDocument extends Model
             $model->slug = sha1(str($request->name)->slug());
             $model->mime = $request->mime;
             $model->maxsize = $request->maxsize;
+
+            switch ($request->mime) {
+                case 'application/msword':
+                    $model->extension = '.doc';
+                    break;
+
+                case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
+                    $model->extension = '.docx';
+                    break;
+
+                case 'application/vnd.ms-excel':
+                    $model->extension = '.xls';
+                    break;
+
+                case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
+                    $model->extension = '.xlsx';
+                    break;
+
+                default:
+                    $model->extension = '.pdf';
+                    break;
+            }
+
             $model->save();
 
             DB::connection($model->connection)->commit();
@@ -159,6 +182,29 @@ class ProcurementDocument extends Model
             $model->slug = sha1(str($request->name)->slug());
             $model->mime = $request->mime;
             $model->maxsize = $request->maxsize;
+
+            switch ($request->mime) {
+                case 'application/msword':
+                    $model->extension = '.doc';
+                    break;
+
+                case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
+                    $model->extension = '.docx';
+                    break;
+
+                case 'application/vnd.ms-excel':
+                    $model->extension = '.xls';
+                    break;
+
+                case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
+                    $model->extension = '.xlsx';
+                    break;
+
+                default:
+                    $model->extension = '.pdf';
+                    break;
+            }
+
             $model->save();
 
             DB::connection($model->connection)->commit();
