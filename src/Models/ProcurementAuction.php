@@ -112,7 +112,7 @@ class ProcurementAuction extends Model
     public static function mapResource(Request $request, $model): array
     {
         return [
-           'id' => $model->id,
+            'id' => $model->id,
             'name' => $model->name,
             'mode' => $model->mode,
             'type_id' => $model->type_id,
@@ -120,7 +120,8 @@ class ProcurementAuction extends Model
             'month' => $model->month,
             'year' => $model->year,
             'source' => $model->source,
-            'ceiling' => 'Rp. ' . number_format($model->ceiling, 0, ',', '.'),
+            'ceiling' => floatval($model->ceiling),
+            'ceiling_formatted' => 'Rp. ' . number_format($model->ceiling, 0, ',', '.'),
             'officer_id' => $model->officer_id,
             'workunit' => [
                 'title' => $model->workunit_name,
@@ -152,14 +153,16 @@ class ProcurementAuction extends Model
             'year' => $model->year,
             'source' => $model->source,
             'ceiling' => floatval($model->ceiling),
+            'ceiling_formatted' => 'Rp. ' . number_format($model->ceiling, 0, ',', '.'),
             'officer_id' => $model->officer_id,
             'workunit' => [
                 'title' => $model->workunit_name,
                 'value' => $model->workunit_id
             ],
-            'workgroup_id' => $model->workgroup_id,
+            'workunit_id' => $model->workunit_id,
             'workunit_name' => $model->workunit_name,
             'status' => $model->status,
+            'documents' => $model->documents
         ];
     }
 
