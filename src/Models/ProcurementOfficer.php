@@ -51,7 +51,7 @@ class ProcurementOfficer extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'document' => 'array',
+        'documents' => 'array',
         'meta' => 'array'
     ];
 
@@ -144,7 +144,14 @@ class ProcurementOfficer extends Model
      */
     public static function mapResourceShow(Request $request, $model): array
     {
-        return static::mapResource($request, $model);
+        return [
+            'id' => $model->id,
+            'name' => $model->name,
+            'slug' => $model->slug,
+            'section' => $model->section,
+            'position' => $model->position,
+            'documents' => $model->documents,
+        ];
     }
 
     /**
@@ -175,7 +182,7 @@ class ProcurementOfficer extends Model
             $model->section = $request->section;
             $model->position = $request->position;
             $model->role = 'PPK';
-
+            $model->documents = $request->documents;
             $parent->officers()->save($model);
 
             ProcurementBiodataCreated::dispatch($model, 'myprocurement-ppk');
@@ -209,6 +216,7 @@ class ProcurementOfficer extends Model
             $model->slug = $request->slug;
             $model->section = $request->section;
             $model->position = $request->position;
+            $model->documents = $request->documents;
             $model->save();
 
             DB::connection($model->connection)->commit();

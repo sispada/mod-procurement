@@ -16,6 +16,7 @@ use Module\Procurement\Http\Controllers\ProcurementWorkgroupController;
 Route::get('dashboard', [DashboardController::class, 'index']);
 Route::get('report', [DashboardController::class, 'report']);
 Route::post('upload-document', [DashboardController::class, 'upload']);
+Route::get('upload-document', [DashboardController::class, 'download']);
 
 Route::put('auction/{procurementAuction}/submitted', [ProcurementAuctionController::class, 'submitted']);
 Route::put('auction/{procurementAuction}/qualified', [ProcurementAuctionController::class, 'qualified']);

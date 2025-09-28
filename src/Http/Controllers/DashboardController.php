@@ -38,10 +38,11 @@ class DashboardController extends Controller
         ]);
 
         if ($request->hasFile('file') && $request->file('file')) {
-            $filename = $request->slug . DIRECTORY_SEPARATOR . $request->uuid . $request->extension;
-            $filepath = $filename;
+            $fileslug = $request->slug;
+            $filename = $request->uuid . $request->extension;
+            $filepath = $fileslug . DIRECTORY_SEPARATOR . $filename;
 
-            if (Storage::disk('uploads')->put($filepath, $request->file('file'))) {
+            if (Storage::disk('uploads')->putFileAs($fileslug, $request->file('file'), $filename)) {
                 return response()->json([
                     'path' => $filepath
                 ], 200);
@@ -52,5 +53,17 @@ class DashboardController extends Controller
             'status' => 422,
             'message' => 'Upload file bermasalah'
         ], 422);
+    }
+
+    public function download(Request $request)
+    {
+        if (!Storage::disk('uploads')->exists($request->path)) {
+            abort(404, "File not found");
+        }
+
+        return optional(Storage::disk('uploads'))->download($request->path, 'sk-ppk.pdf', [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="sample.pdf"',
+        ]);
     }
 }
