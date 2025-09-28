@@ -15,6 +15,7 @@ return new class () extends Migration {
             $table->string('name')->index();
             $table->string('slug', 40)->unique();
             $table->string('mime')->default('application/pdf');
+            $table->string('extension')->default('.pdf');
             $table->mediumInteger('maxsize')->default(2048);
             $table->jsonb('meta')->nullable();
             $table->softDeletes();
