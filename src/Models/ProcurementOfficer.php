@@ -51,6 +51,7 @@ class ProcurementOfficer extends Model
      * @var array<string, string>
      */
     protected $casts = [
+        'document' => 'array',
         'meta' => 'array'
     ];
 
@@ -60,6 +61,35 @@ class ProcurementOfficer extends Model
      * @var string
      */
     protected $defaultOrder = 'name';
+
+    /**
+     * mapRecordBase function
+     *
+     * @param Request $request
+     * @return array
+     */
+    public static function mapRecordBase(Request $request): array
+    {
+        return [
+            'id' => null,
+            'name' => null,
+            'slug' => null,
+            'section' => null,
+            'position' => null,
+            'workunit_id' => null,
+            'role' => null,
+            'documents' => [
+                [
+                    'name' => 'SK PEJABAT PEMBUAT KOMITMEN (PPK)',
+                    'slug' => 'sk-ppk',
+                    'mime' => 'application/pdf',
+                    'extension' => '.pdf',
+                    'maxsize' => '2048',
+                    'path' => null
+                ]
+            ],
+        ];
+    }
 
     /**
      * mapHeaders function

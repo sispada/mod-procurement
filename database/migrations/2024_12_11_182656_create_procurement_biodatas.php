@@ -18,6 +18,7 @@ return new class () extends Migration {
             $table->string('position')->nullable();
             $table->foreignId('workunit_id')->nullable();
             $table->enum('role', ['PPK', 'KASUBAG', 'KABAG', 'PPBJ', 'ADMINISTRATOR', 'STAFF'])->index()->nullable();
+            $table->jsonb('documents')->nullable();
             $table->jsonb('meta')->nullable();
             $table->softDeletes();
             $table->timestamps();
