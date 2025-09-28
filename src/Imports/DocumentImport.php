@@ -37,6 +37,7 @@ class DocumentImport implements ToCollection, WithHeadingRow
             $model->name = $record->name;
             $model->slug = str($record->name)->slug();
             $model->mime = $record->mime;
+            $model->extension = $record->extension;
             $model->maxsize = $record->maxsize;
             $model->save();
         }
