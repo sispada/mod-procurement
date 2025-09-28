@@ -79,33 +79,6 @@
 					</v-col>
 				</v-row>
 			</v-card-text>
-			<div class="text-overline px-4">dokumen</div>
-			<v-divider></v-divider>
-
-			<v-card-text>
-				<v-row dense>
-					<v-col
-						v-for="(document, documentIndex) in record.documents"
-						:key="documentIndex"
-						cols="12"
-					>
-						<file-upload
-							:accept="document.mime"
-							:label="document.name"
-							:extension="document.extension"
-							:slug="document.slug"
-							:callback="(res) => (document.path = res.path)"
-							v-model="document.path"
-							backend-url="/procurement/api/upload-document"
-							density="comfortable"
-							deletable
-							hide-details
-							readonly
-							uploadable
-						></file-upload>
-					</v-col>
-				</v-row>
-			</v-card-text>
 		</template>
 	</form-edit>
 </template>

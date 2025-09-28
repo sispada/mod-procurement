@@ -55,15 +55,52 @@ class DashboardController extends Controller
         ], 422);
     }
 
+    /**
+     * download function
+     *
+     * @param Request $request
+     * @return void
+     */
     public function download(Request $request)
     {
         if (!Storage::disk('uploads')->exists($request->path)) {
-            abort(404, "File not found");
+            return response()->json([
+                'success' => false,
+                'message' => 'File not found'
+            ], 404);
         }
 
         return optional(Storage::disk('uploads'))->download($request->path, 'sk-ppk.pdf', [
             'Content-Type' => 'application/pdf',
             'Content-Disposition' => 'inline; filename="sample.pdf"',
         ]);
+    }
+
+    /**
+     * destroy function
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function destroy(Request $request)
+    {
+        if (!Storage::disk('uploads')->exists($request->path)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'File not found'
+            ], 404);
+        }
+
+        if (Storage::disk('uploads')->delete($request->path)) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Hapus file dari server berhasil.'
+            ], 200);
+        }
+
+        return response()->json([
+            'success' => false,
+            'message' => 'Hapus file dari server gagal.'
+        ], 500);
     }
 }

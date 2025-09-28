@@ -221,7 +221,7 @@ class ProcurementOfficer extends Model
 
             DB::connection($model->connection)->commit();
 
-            ProcurementBiodataCreated::dispatch($model);
+            ProcurementBiodataCreated::dispatch($model, 'myprocurement-ppk');
 
             return new OfficerResource($model);
         } catch (\Exception $e) {
