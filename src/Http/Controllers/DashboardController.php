@@ -3,8 +3,11 @@
 namespace Module\Procurement\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
+use Module\Procurement\Models\ProcurementAuction;
+use Module\Procurement\Models\ProcurementHistory;
 use Module\Procurement\Models\ProcurementDocument;
 
 class DashboardController extends Controller
@@ -13,11 +16,54 @@ class DashboardController extends Controller
      * index function
      *
      * @param Request $request
-     * @return void
+     * @return JsonResponse
      */
-    public function index(Request $request): void
+    public function index(Request $request): JsonResponse
     {
-        //
+        $auctions_count = ProcurementAuction::forCurrentUser($request->user())->count();
+
+        return response()->json([
+            'record' => [
+                'widgets' => [
+                    [
+                        'icon' => "front_loader",
+                        'title' => "konstruksi",
+                        'complete' => ProcurementHistory::forCurrentUser($request->user())->where('type_id', 1)->where('year', now()->format('Y'))->count(),
+                        'count' => ProcurementAuction::forCurrentUser($request->user())->where('type_id', 1)->where('year', now()->format('Y'))->count(),
+                        'year' => now()->format('Y'),
+                        'color' => "blue-grey"
+                    ],
+
+                    [
+                        'icon' => "home",
+                        'title' => "konsultant",
+                        'complete' => ProcurementHistory::forCurrentUser($request->user())->where('type_id', 2)->where('year', now()->format('Y'))->count(),
+                        'count' => ProcurementAuction::forCurrentUser($request->user())->where('type_id', 2)->where('year', now()->format('Y'))->count(),
+                        'year' => now()->format('Y'),
+                        'color' => "orange"
+                    ],
+
+                    [
+                        'icon' => "box",
+                        'title' => "barang/jasa",
+                        'complete' => ProcurementHistory::forCurrentUser($request->user())->where('type_id', 3)->where('year', now()->format('Y'))->count(),
+                        'count' => ProcurementAuction::forCurrentUser($request->user())->where('type_id', 3)->where('year', now()->format('Y'))->count(),
+                        'year' => now()->format('Y'),
+                        'color' => "teal"
+                    ]
+                ],
+            ],
+            'setups' => [
+                'badges' => [
+                    'procurement-auction' => [
+                        'slug' => 'procurement-auction',
+                        'color' => 'orange',
+                        'show' => $auctions_count > 0,
+                        'value' => $auctions_count
+                    ]
+                ],
+            ]
+        ]);
     }
 
     public function report(Request $request): void

@@ -73,7 +73,7 @@ class ProcurementAuction extends Model
             'methods' => ProcurementMethod::forCombo(),
             'officers' => ProcurementBiodata::where('role', 'PPBJ')->forCombo(),
             'workgroups' => ProcurementWorkgroup::forCombo(),
-            'workunits' => optional($request->user()->userable)->workunit_id ? ProcurementWorkunit::where('id', $request->user()->userable->workunit_id)->forCombo() : []
+            'workunits' => ProcurementWorkunit::forCombo()
         ];
     }
 
@@ -211,17 +211,19 @@ class ProcurementAuction extends Model
     {
         if ($user->hasLicenseAs('procurement-kasubag')) {
             return $query
-                ->where('status', 'SUBMITTED');
+                ->where('status', 'SUBMITTED')
+                ->whereNull('officer_id');
         }
 
         if ($user->hasLicenseAs('procurement-kabag')) {
             return $query
-                ->where('status', 'QUALIFIED');
+                ->where('status', 'QUALIFIED')
+                ->whereNull('officer_id');
         }
 
         if ($user->hasLicenseAs('procurement-ppbj')) {
             return $query
-                ->where('status', 'VERIFIED')
+                ->where('status', 'SUBMITTED')
                 ->where('officer_id', $user->userable->id)
                 ->orWhere(function ($qry) use ($user) {
                     $qry->where('status', 'VERIFIED')

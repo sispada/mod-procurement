@@ -11,11 +11,11 @@ use Module\System\Traits\Searchable;
 use Module\System\Traits\HasPageSetup;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Module\Procurement\Http\Resources\BiodataResource;
 use Module\Procurement\Events\ProcurementBiodataCreated;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class ProcurementBiodata extends Model
 {
@@ -61,6 +61,57 @@ class ProcurementBiodata extends Model
      * @var string
      */
     protected $defaultOrder = 'name';
+
+    /**
+     * toSearchableArray function
+     *
+     * @return array
+     */
+    protected function toSearchableArray(): array
+    {
+        return [
+            // 'id' => 'id',
+            'name' => 'name',
+            'slug' => 'slug',
+        ];
+    }
+
+    /**
+     * toFilterableArray function
+     *
+     * {param} => {field} | {mode}::{field}
+     * mode = raw | json | month | eager | orwhere
+     *
+     * @return array
+     */
+    protected function toFilterableArray(): array
+    {
+        return [
+            'role' => 'role'
+        ];
+    }
+
+    /**
+     * mapFilters function
+     *
+     * type: Combobox, DateInput, NumberInput, Select, Textfield, TimeInput, Hidden
+     *
+     * @return array
+     */
+    public static function mapFilters(): array
+    {
+        return [
+            'role' => [
+                'title' => 'Role',
+                'data' => ['PPK', 'KASUBAG', 'KABAG', 'PPBJ', 'ADMINISTRATOR', 'STAFF'],
+                'used' => false,
+                'operators' => ['=', '<', '>'],
+                'operator' => ['='],
+                'type' => 'Select',
+                'value' => null,
+            ],
+        ];
+    }
 
     /**
      * mapHeaders function
