@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Module\Procurement\Http\Resources\BiodataResource;
 use Module\Procurement\Events\ProcurementBiodataCreated;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ProcurementBiodata extends Model
 {
@@ -194,6 +195,14 @@ class ProcurementBiodata extends Model
             'biodata_id',
             'workgroup_id'
         );
+    }
+
+    /**
+     * workbios
+     */
+    public function workbios(): HasMany
+    {
+        return $this->hasMany(ProcurementWorkbio::class, 'biodata_id');
     }
 
     /**

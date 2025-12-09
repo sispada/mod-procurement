@@ -229,7 +229,7 @@ class ProcurementAuction extends Model
                     $qry->where('status', 'VERIFIED')
                         ->whereIn(
                             'workgroup_id',
-                            $user->userable->workgroups->pluck('workgroup_id')
+                            $user->userable->workbios->pluck('workgroup_id')
                         );
                 });
         }
@@ -387,6 +387,38 @@ class ProcurementAuction extends Model
             return response()->json([
                 'success' => true,
                 'message' => 'evaluasi lelang berhasil.'
+            ], 200);
+        } catch (\Exception $e) {
+            DB::connection($model->connection)->rollBack();
+
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * completedRecord function
+     *
+     * @param Request $request
+     * @param [type] $model
+     * @return void
+     */
+    public static function completedRecord(Request $request, $model)
+    {
+        DB::connection($model->connection)->beginTransaction();
+
+        try {
+            $model->status = 'COMPLETED';
+            $model->evaluated_by = $request->user()->userable_id;
+            $model->save();
+
+            DB::connection($model->connection)->commit();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'pengadaan berhasil.'
             ], 200);
         } catch (\Exception $e) {
             DB::connection($model->connection)->rollBack();

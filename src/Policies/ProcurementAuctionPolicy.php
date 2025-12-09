@@ -71,6 +71,7 @@ class ProcurementAuctionPolicy
         return
             $user->hasLicenseAs('procurement-kasubag') &&
             $user->hasPermission('update-procurement-auction') &&
+            $procurementAuction->mode === 'POKJA' && 
             $procurementAuction->status === 'SUBMITTED';
     }
 
@@ -82,6 +83,7 @@ class ProcurementAuctionPolicy
         return
             $user->hasLicenseAs('procurement-kabag') &&
             $user->hasPermission('update-procurement-auction') &&
+            $procurementAuction->mode === 'POKJA' && 
             $procurementAuction->status === 'QUALIFIED';
     }
 
@@ -91,9 +93,22 @@ class ProcurementAuctionPolicy
     public function avaluated(SystemUser $user, ProcurementAuction $procurementAuction): bool
     {
         return
-            $user->hasLicenseAs('procurement-pokja') &&
+            $user->hasAnyLicense('procurement-pokja', 'procurement-ppbj') &&
             $user->hasPermission('update-procurement-auction') &&
+            $procurementAuction->mode === 'POKJA' && 
             $procurementAuction->status === 'VERIFIED';
+    }
+
+    /**
+     * Determine whether the user can submitted the model.
+     */
+    public function completed(SystemUser $user, ProcurementAuction $procurementAuction): bool
+    {
+        return
+            $user->hasAnyLicense('procurement-pokja', 'procurement-ppbj') &&
+            $user->hasPermission('update-procurement-auction') &&
+            $procurementAuction->mode === 'PPBJ' && 
+            $procurementAuction->status === 'SUBMITTED';
     }
 
     /**

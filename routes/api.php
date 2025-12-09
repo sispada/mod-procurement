@@ -25,6 +25,7 @@ Route::put('auction/{procurementAuction}/rejected', [ProcurementAuctionControlle
 Route::put('auction/{procurementAuction}/verified', [ProcurementAuctionController::class, 'verified']);
 Route::put('auction/{procurementAuction}/aborted', [ProcurementAuctionController::class, 'aborted']);
 Route::put('auction/{procurementAuction}/avaluated', [ProcurementAuctionController::class, 'avaluated']);
+Route::put('auction/{procurementAuction}/completed', [ProcurementAuctionController::class, 'completed']);
 
 Route::put('auction/{procurementAuction}/restore', [ProcurementAuctionController::class, 'restore']);
 Route::delete('auction/{procurementAuction}/force', [ProcurementAuctionController::class, 'forceDelete']);

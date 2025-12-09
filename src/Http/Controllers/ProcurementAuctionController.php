@@ -122,4 +122,20 @@ class ProcurementAuctionController extends Controller
 
         return ProcurementAuction::avaluatedRecord($request, $procurementAuction);
     }
+
+    /**
+     * Undocumented function
+     *
+     * @param Request $request
+     * @param ProcurementAuction $procurementAuction
+     * @return \Illuminate\Http\Response
+     */
+    public function completed(Request $request, ProcurementAuction $procurementAuction)
+    {
+        Gate::authorize('completed', $procurementAuction);
+
+        $request->validate([]);
+
+        return ProcurementAuction::completedRecord($request, $procurementAuction);
+    }
 }
