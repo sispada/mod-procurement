@@ -108,6 +108,24 @@ class ProcurementMember extends Model
     }
 
     /**
+     * mapResourceShow function
+     *
+     * @param Request $request
+     * @return array
+     */
+    public static function mapResourceShow(Request $request, $model): array
+    {
+        return [
+            'id' => $model->id,
+            'name' => $model->name,
+            'slug' => optional($model->biodata)->slug,
+            'section' => optional($model->biodata)->section,
+            'position' => optional($model->biodata)->position,
+            'file_sk' => $model->file_sk,
+        ];
+    }
+
+    /**
      * biodata function
      *
      * @return BelongsTo
@@ -145,6 +163,7 @@ class ProcurementMember extends Model
             $model->section = $request->section;
             $model->position = $request->position;
             $model->role = 'POKJA';
+            $model->file_sk = $request->file_sk;
             $parent->members()->save($model);
 
             ProcurementBiodataCreated::dispatch($model);
@@ -178,6 +197,7 @@ class ProcurementMember extends Model
             $model->slug = $request->slug;
             $model->section = $request->section;
             $model->position = $request->position;
+            $model->file_sk = $request->file_sk;
             $model->save();
 
             DB::connection($model->connection)->commit();

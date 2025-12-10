@@ -84,9 +84,10 @@ class DashboardController extends Controller
         ]);
 
         if ($request->hasFile('file') && $request->file('file')) {
-            $fileslug = $request->slug;
-            $filename = $request->uuid . $request->extension;
-            $filepath = $fileslug . DIRECTORY_SEPARATOR . $filename;
+            $fileslug   = $request->slug;
+            $extension  = str($request->extension)->contains(".") ? $request->extension : "." . $request->extension;
+            $filename   = $request->uuid . $extension;
+            $filepath   = $fileslug . DIRECTORY_SEPARATOR . $filename;
 
             if (Storage::disk('uploads')->putFileAs($fileslug, $request->file('file'), $filename)) {
                 return response()->json([

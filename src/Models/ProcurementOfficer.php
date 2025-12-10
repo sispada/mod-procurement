@@ -78,6 +78,7 @@ class ProcurementOfficer extends Model
             'position' => null,
             'workunit_id' => null,
             'role' => null,
+            'file_sk' => null,
             'documents' => [
                 [
                     'name' => 'SK PEJABAT PEMBUAT KOMITMEN (PPK)',
@@ -150,7 +151,8 @@ class ProcurementOfficer extends Model
             'slug' => $model->slug,
             'section' => $model->section,
             'position' => $model->position,
-            'documents' => $model->documents,
+            'file_sk' => $model->file_sk,
+            // 'documents' => $model->documents,
         ];
     }
 
@@ -182,7 +184,8 @@ class ProcurementOfficer extends Model
             $model->section = $request->section;
             $model->position = $request->position;
             $model->role = 'PPK';
-            $model->documents = $request->documents;
+            $model->file_sk = $request->file_sk;
+            // $model->documents = $request->documents;
             $parent->officers()->save($model);
 
             ProcurementBiodataCreated::dispatch($model, 'myprocurement-ppk');
@@ -216,7 +219,8 @@ class ProcurementOfficer extends Model
             $model->slug = $request->slug;
             $model->section = $request->section;
             $model->position = $request->position;
-            $model->documents = $request->documents;
+            $model->file_sk = $request->file_sk;
+            // $model->documents = $request->documents;
             $model->save();
 
             DB::connection($model->connection)->commit();
